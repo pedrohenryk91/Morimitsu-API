@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id String @id @default(uuid())
+  email String @unique
+  password String
+}
+
+model teachers {
+  id String @id @default(uuid())
+  cpf String @unique
+  name String
+  password String
+
+  classes classes[]
+}
+
+model students {
+  id String @id @default(uuid())
+  cpf String @unique
+  name String
+  registration String @unique
+  phone_number String?
+  guardian_number String?
+  birthday DateTime
+  frequency Int
+  belt_id String
+
+  belt belt @relation(fields: [belt_id], references: [id])
+  classes classes[]
+}
+
+model belt {
+  id String @id
+  color String
+  rate Int @default(0)
+
+  students students[]
+}
+
+model frequency {
+  student_id String
+  class_id String
+  date DateTime @default(now())
+
+  @@id([student_id,class_id])
+}
+
+model classes {
+  id String @id @default(uuid())
+  name String @unique
+
+  teacher_id String @default("no-teacher")
+
+  teacher teachers @relation(fields: [teacher_id], references: [id], onDelete: SetDefault)
+  students students[]
+}
