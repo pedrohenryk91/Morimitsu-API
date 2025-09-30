@@ -4,6 +4,7 @@ import { AdminRepository } from "../../repositories/AdminRepository";
 
 interface CreateAdminParams {
     email: string,
+    username: string,
     password: string,
 }
 
@@ -11,6 +12,7 @@ export class CreateAdminService {
     constructor(private adminRepo: AdminRepository){}
     async execute({
         email,
+        username,
         password,
     }: CreateAdminParams){
         const doesEmailInUse = await this.adminRepo.findByEmail(email);
@@ -22,6 +24,7 @@ export class CreateAdminService {
 
         await this.adminRepo.create({
             email,
+            username,
             password:hash_password,
         })
 

@@ -91,6 +91,39 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         }
                     }
                 }
+            },
+            "auth/login":{
+                post:{
+                    tags:["Auth"],
+                    summary:"Login to normal user's",
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:{
+                                        "email":{
+                                            description:"The user email"
+                                        },
+                                        "password":{
+                                            description:"The user password"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        201:{
+                            description:"User logged successfully",
+                        },
+                        400:{
+                            description:"Incorrect password",
+                        },
+                        404:{
+                            description:"User was not found"
+                        }
+                    }
+                }
             }
         }
     },

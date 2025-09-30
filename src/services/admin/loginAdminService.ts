@@ -26,6 +26,11 @@ export class LoginAdminService {
             throw new IncorrectPasswordError();
         }
 
-        return genToken({ id: searchForAdmin.id })
+        const token = genToken({ id: searchForAdmin.id });
+
+        return {
+            token,
+            username: searchForAdmin.username,
+        }
     }
 }

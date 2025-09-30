@@ -7,6 +7,7 @@ import { SwaggerDocumentationOptions } from "../docs/swagger";
 import { adminRouter } from "../http/routers/adminRouter";
 import fastifyCors from "@fastify/cors";
 import fastifyRedis from "@fastify/redis";
+import { authRouter } from "../http/routers/authRouter";
 
 export const app = fastify();
 
@@ -18,7 +19,6 @@ app.register(fastifyRedis, {
     host:"127.0.0.1",
     password:REDIS_PASSWORD,
     port:6379,
-    family:4,
 })
 
 app.register(fastifyCors, {
@@ -37,6 +37,10 @@ app.register(fastifySwaggerUi, {
 app.register(adminRouter, {
     prefix:"/admin"
 });
+
+app.register(authRouter, {
+    prefix:"/auth"
+})
 
 app.setErrorHandler((error, request, reply) => {
     reply.status(error.statusCode || 500).send({

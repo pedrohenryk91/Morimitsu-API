@@ -1,36 +1,54 @@
-import { Prisma, teachers } from "@prisma/client";
-import { TeacherRepository } from "../TeacherRepository";
+import { Prisma, user } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
+import { UserRepository } from "../UserRepository";
 
-export class PrismaTeacherRepository implements TeacherRepository {
-    async create(data: Prisma.teachersCreateInput): Promise<teachers> {
-        const teacher = await prisma.teachers.create({
+export class PrismaUserRepository implements UserRepository {
+    async create(data: Prisma.userCreateInput): Promise<user> {
+        const user = await prisma.user.create({
             data,
         })
-        return teacher
+        return user
     }
 
-    async findById(id: string): Promise<teachers | null> {
-        const teacher = await prisma.teachers.findUnique({
+    async findById(id: string): Promise<user | null> {
+        const user = await prisma.user.findUnique({
             where:{
                 id,
             }
         })
-        return teacher
+        return user
     }
 
-    async update(id: string, data: Partial<teachers>): Promise<teachers | null> {
-        const teacher = await prisma.teachers.update({
+    async findByCpf(cpf: string): Promise<user | null> {
+        const user = await prisma.user.findUnique({
+            where:{
+                cpf,
+            }
+        })
+        return user
+    }
+
+    async findByEmail(email: string): Promise<user | null> {
+        const user = await prisma.user.findUnique({
+            where:{
+                email,
+            }
+        })
+        return user
+    }
+
+    async update(id: string, data: Partial<user>): Promise<user | null> {
+        const user = await prisma.user.update({
             where:{
                 id,
             },
             data,
         })
-        return teacher
+        return user
     }
 
     async delete(id: string): Promise<void> {
-        await prisma.teachers.delete({
+        await prisma.user.delete({
             where:{
                 id,
             }

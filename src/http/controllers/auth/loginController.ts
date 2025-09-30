@@ -1,32 +1,31 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { PrismaAdminRepository } from "../../../repositories/prisma/PrismaAdminRepository";
-import { LoginAdminService } from "../../../services/admin/loginAdminService";
 import { EntityNotFoundError } from "../../../errors/entityNotFoundError";
 import { IncorrectPasswordError } from "../../../errors/passwordIncorrectError";
+import { PrismaUserRepository } from "../../../repositories/prisma/PrismaTeacherRepository";
+import { LoginService } from "../../../services/auth/loginService";
 
-export async function adminLoginController(request: FastifyRequest, reply: FastifyReply){
+export async function LoginController(request: FastifyRequest, reply: FastifyReply){
     try {
-        const {email,password} = z.object({
+        const {email, password} = z.object({
             email: z.email(),
-            password: z.string()
+            password: z.string(),
         }).parse(request.body);
 
-        const adminRepo = new PrismaAdminRepository();
-        const service = new LoginAdminService(adminRepo);
+        const repo = new PrismaUserRepository();
+        const service = new LoginService(repo);
 
         const result = await service.execute({
             email,
             password,
-        });
+        })
 
         reply.status(201).send({
-            description:"Logged Succesfully.",
-            username:result.username,
+            description:"User logged successfully.",
             token:result.token,
         });
     }
-    catch(err) {
+    catch (err) {
         if(err instanceof IncorrectPasswordError){
             reply.status(400).send({
                 message:err.message,

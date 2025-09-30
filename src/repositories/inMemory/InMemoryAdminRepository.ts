@@ -1,15 +1,18 @@
 import { admin } from "@prisma/client";
 import { AdminRepository } from "../AdminRepository";
 import { randomUUID } from "crypto";
+import { hash } from "bcryptjs";
 
 export class InMemoryAdminRepository implements AdminRepository {
     private admins: admin[] = []
 
     async create(data: Partial<admin>): Promise<admin> {
+        const hash_password = await hash(String(data.password),11);
         const admin: admin = {
             id: String(randomUUID),
             email: String(data.email),
-            password: String(data.password)
+            username: String(data.username),
+            password: hash_password
         };
         this.admins.push(admin);
         return admin;

@@ -6,8 +6,9 @@ import { EmailAlreadyInUseError } from "../../../errors/emailAlreadyInUseError";
 
 export async function createAdminController(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const {email, password} = z.object({
+        const {email, password, username} = z.object({
             email: z.email(),
+            username: z.string(),
             password: z.string().min(6),
         }).parse(request.body);
 
@@ -16,6 +17,7 @@ export async function createAdminController(request: FastifyRequest, reply: Fast
 
         await service.execute({
             email,
+            username,
             password,
         });
 
