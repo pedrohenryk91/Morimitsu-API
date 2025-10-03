@@ -8,6 +8,7 @@ import { adminRouter } from "../http/routers/adminRouter";
 import fastifyCors from "@fastify/cors";
 import fastifyRedis from "@fastify/redis";
 import { authRouter } from "../http/routers/authRouter";
+import { userRouter } from "../http/routers/userRouter";
 
 export const app = fastify();
 
@@ -40,6 +41,10 @@ app.register(adminRouter, {
 
 app.register(authRouter, {
     prefix:"/auth"
+})
+
+app.register(userRouter, {
+    prefix:"/user",
 })
 
 app.setErrorHandler((error, request, reply) => {

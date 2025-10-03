@@ -4,10 +4,11 @@ import { prisma } from "../../lib/prisma";
 
 export class PrismaAdminRepository implements AdminRepository {
     async create(data: Prisma.adminCreateInput): Promise<admin> {
-        const {email,password} = data;
+        const {email,username,password} = data;
         const admin = await prisma.admin.create({
             data:{
                 email,
+                username,
                 password,
             }
         })

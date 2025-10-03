@@ -37,6 +37,6 @@ export async function adminLoginController(request: FastifyRequest, reply: Fasti
                 message:err.message,
             });
         }
-        throw err;
+        throw err;//unknown errors will be treated by superior layers of code
     }
 }

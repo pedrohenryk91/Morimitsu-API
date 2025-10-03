@@ -54,12 +54,12 @@ model user {
   name String
   email String @unique
   password String
+  phone_number String?
 
-  classes classes[]
   @@map("tb_user")
 }
 
-model students {
+model student {
   id String @id @default(uuid())
   cpf String @unique
   nickname String
@@ -72,7 +72,9 @@ model students {
   belt_id String
 
   belt belt @relation(fields: [belt_id], references: [id])
-  classes classes[]
+
+  frequency frequency[]
+  classes grade[]
 }
 
 model belt {
@@ -80,23 +82,35 @@ model belt {
   color colors
   rate Int @default(0)
 
-  students students[]
+  students student[]
 }
 
 model frequency {
   student_id String
-  class_id String
+  meeting_id String
   date DateTime @default(now())
 
-  @@id([student_id,class_id])
+  student student @relation(fields: [student_id],references: [id])
+  meeting meeting @relation(fields: [meeting_id],references: [id])
+
+  @@id([student_id,meeting_id])
 }
 
-model classes {
+model meeting {
+  id String @id @default(uuid())
+  name String
+  description String?
+  date DateTime @default(now())
+  class_id String @default("no-class")
+
+  grade grade @relation(fields: [class_id],references: [id],onDelete: SetDefault)
+  frequency frequency[]
+}
+
+model grade {
   id String @id @default(uuid())
   name String @unique
 
-  teacher_id String @default("no-teacher")
-
-  user user @relation(fields: [teacher_id], references: [id], onDelete: SetDefault)
-  students students[]
+  students student[]
+  meeting meeting[]
 }

@@ -8,19 +8,25 @@ export class InMemoryUserRepository implements UserRepository {
 
     async create(data: Prisma.userCreateInput): Promise<user> {
         const hash_password = await hash(data.password, 11);
-        const teacher: user = {
+        const phone_number = (data?.phone_number?data.phone_number:null)
+        const user: user = {
             id:randomUUID(),
             cpf:data.cpf,
             name:data.name,
             email:data.email,
             password:hash_password,
+            phone_number,
         }
-        this.users.push(teacher)
-        return teacher
+        this.users.push(user)
+        return user
     }
 
     async findById(id: string): Promise<user | null> {
         return this.users.find(user => user.id === id) ?? null;
+    }
+
+    async findByCpf(cpf: string): Promise<user | null> {
+        return this.users.find(user => user.cpf === cpf) ?? null;
     }
 
     async findByEmail(email: string): Promise<user | null> {

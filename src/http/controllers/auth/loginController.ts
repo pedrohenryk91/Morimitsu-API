@@ -2,7 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
 import { EntityNotFoundError } from "../../../errors/entityNotFoundError";
 import { IncorrectPasswordError } from "../../../errors/passwordIncorrectError";
-import { PrismaUserRepository } from "../../../repositories/prisma/PrismaTeacherRepository";
+import { PrismaUserRepository } from "../../../repositories/prisma/PrismaUserRepository";
 import { LoginService } from "../../../services/auth/loginService";
 
 export async function LoginController(request: FastifyRequest, reply: FastifyReply){
