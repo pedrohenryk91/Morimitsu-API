@@ -6,9 +6,10 @@
 
 generator client {
   provider = "prisma-client-js"
+  
 }
 
-datasource db {
+datasource prod_db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
@@ -55,7 +56,9 @@ model user {
   email String @unique
   password String
   phone_number String?
+  belt_id String
 
+  belt belt @relation(fields: [belt_id], references: [id])
   @@map("tb_user")
 }
 
@@ -82,6 +85,7 @@ model belt {
   color colors
   rate Int @default(0)
 
+  user user[]
   students student[]
 }
 
