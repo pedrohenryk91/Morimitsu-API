@@ -1,9 +1,6 @@
 import { belt } from "@prisma/client";
+import { DefaultRepository } from "./DefaultRepository";
 
-export interface BeltRepository {
-    create(data: belt): Promise<belt>
-    findById(id: string): Promise<belt | null>
+export interface BeltRepository extends DefaultRepository<belt, string> {
     findByStudentId(id: string): Promise<belt | null>
-    update(id: string, data: Partial<belt>): Promise<belt>
-    delete(id: string): Promise<void>
 }

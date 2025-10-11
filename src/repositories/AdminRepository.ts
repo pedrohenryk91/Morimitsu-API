@@ -1,8 +1,6 @@
 import { admin, Prisma } from "@prisma/client";
+import { DefaultRepository } from "./DefaultRepository";
 
-export interface AdminRepository {
-    create(data: Partial<admin>): Promise<admin>
+export interface AdminRepository extends DefaultRepository<admin, string> {
     findByEmail(email: string): Promise<admin | null>
-    update(id: string, data:Partial<admin>): Promise<admin | null>
-    delete(id: string): Promise<void>
 }

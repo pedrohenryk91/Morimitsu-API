@@ -15,6 +15,15 @@ export class PrismaAdminRepository implements AdminRepository {
         return admin
     }
 
+    async findById(id: string): Promise<admin | null> {
+        const admin = await prisma.admin.findUnique({
+            where:{
+                id,
+            }
+        })
+        return admin
+    }
+
     async findByEmail(email: string): Promise<admin | null> {
         const admin = prisma.admin.findUnique({
             where:{

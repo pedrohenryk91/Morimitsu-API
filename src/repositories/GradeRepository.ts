@@ -1,7 +1,4 @@
 import { grade } from "@prisma/client";
+import { DefaultRepository } from "./DefaultRepository";
 
-export interface GradeRepository {
-    create(data: grade): Promise<grade>
-    findById(id: string): Promise<grade | null>
-    delete(id: string): Promise<void>
-}
+export interface GradeRepository extends DefaultRepository<grade, string> {}
