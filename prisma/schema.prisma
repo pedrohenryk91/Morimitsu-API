@@ -8,6 +8,11 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum roles {
+  admin
+  instructor
+}
+
 enum colors {
   white
   white_gray
@@ -29,13 +34,6 @@ enum colors {
   red
 }
 
-model admin {
-  id String @id @default(uuid())
-  username String @unique
-  email String @unique
-  password String
-}
-
 model announcement {
   id String @id
   title String
@@ -50,6 +48,7 @@ model user {
   email String @unique
   password String
   phone_number String?
+  role roles @default(instructor)
   belt_id String
 
   belt belt @relation(fields: [belt_id], references: [id])
@@ -71,7 +70,7 @@ model student {
   belt belt @relation(fields: [belt_id], references: [id])
 
   frequency frequency[]
-  classes grade[]
+  class classes[]
 }
 
 model belt {
@@ -101,11 +100,11 @@ model meeting {
   date DateTime @default(now())
   class_id String @default("no-class")
 
-  grade grade @relation(fields: [class_id],references: [id],onDelete: SetDefault)
+  class classes @relation(fields: [class_id],references: [id],onDelete: SetDefault)
   frequency frequency[]
 }
 
-model grade {
+model classes {
   id String @id @default(uuid())
   name String @unique
 

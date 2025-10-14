@@ -1,11 +1,26 @@
 import { Prisma, user } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 import { UserRepository } from "../UserRepository";
+import { randomUUID } from "crypto";
 
 export class PrismaUserRepository implements UserRepository {
-    async create(data: Prisma.userCreateInput): Promise<user> {
+    async create(data: user): Promise<user> {
+        const {cpf,email,name,password,phone_number,belt_id,role} = data;
         const user = await prisma.user.create({
-            data,
+            data:{
+                cpf,
+                name,
+                role,
+                belt:{
+                    create:{
+                        id:belt_id,
+                        color:"white",
+                    }
+                },
+                email,
+                password,
+                phone_number,
+            },
         })
         return user
     }

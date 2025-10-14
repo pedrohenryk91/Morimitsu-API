@@ -18,81 +18,81 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             }
         },
         paths:{
-            "admin/login":{
-                "post":{
-                    tags:["Admin"],
-                    summary:"Login route for the admin",
-                    description:"Login route. Admin log in.",
-                    requestBody:{
-                        content:{
-                            "application/json":{
-                                schema:{
-                                    properties:{
-                                        email:{ description:"The admin's email" },
-                                        password:{ description:"The admin's password" },
-                                    },
-                                    required:["email","password"],
-                                }
-                            }
-                        }
-                    },
-                    responses:{
-                        201:{
-                            description:"Success, returns the token of the logged one.",
-                            content:{
-                                "application/json":{
-                                    schema:{
-                                        properties:{
-                                            "token":{
-                                                type:"string",
-                                                description:"The authorization token"
-                                            },
-                                        }
-                                    }
-                                }
-                            }
-                        },
-                        400:{
-                            description:"The password is incorrect."
-                        },
-                        404:{
-                            description:"The admin email was not found."
-                        },
-                    }
-                }
-            },
-            "admin/create":{
-                "post":{
-                    tags:["Admin"],
-                    summary:"Route to create the admins",
-                    description:"",
-                    requestBody:{
-                        content:{
-                            "application/json":{
-                                schema:{
-                                    properties:{
-                                        "email":{
-                                            description:"The admin email"
-                                        },
-                                        "password":{
-                                            description:"The password of the admin"
-                                        }
-                                    },
-                                    required:["email","password"]
-                                }
-                            }
-                        }
-                    },
-                    responses:{
-                        201:{
-                            description:"Admin created succesfully",
-                        },
-                        409:{
-                            description:"Email already in use"
-                        }
-                    }
-                }
-            },
+            // "admin/login":{
+            //     "post":{
+            //         tags:["Admin"],
+            //         summary:"Login route for the admin",
+            //         description:"Login route. Admin log in.",
+            //         requestBody:{
+            //             content:{
+            //                 "application/json":{
+            //                     schema:{
+            //                         properties:{
+            //                             email:{ description:"The admin's email" },
+            //                             password:{ description:"The admin's password" },
+            //                         },
+            //                         required:["email","password"],
+            //                     }
+            //                 }
+            //             }
+            //         },
+            //         responses:{
+            //             201:{
+            //                 description:"Success, returns the token of the logged one.",
+            //                 content:{
+            //                     "application/json":{
+            //                         schema:{
+            //                             properties:{
+            //                                 "token":{
+            //                                     type:"string",
+            //                                     description:"The authorization token"
+            //                                 },
+            //                             }
+            //                         }
+            //                     }
+            //                 }
+            //             },
+            //             400:{
+            //                 description:"The password is incorrect."
+            //             },
+            //             404:{
+            //                 description:"The admin email was not found."
+            //             },
+            //         }
+            //     }
+            // },
+            // "admin/create":{
+            //     "post":{
+            //         tags:["Admin"],
+            //         summary:"Route to create the admins",
+            //         description:"",
+            //         requestBody:{
+            //             content:{
+            //                 "application/json":{
+            //                     schema:{
+            //                         properties:{
+            //                             "email":{
+            //                                 description:"The admin email"
+            //                             },
+            //                             "password":{
+            //                                 description:"The password of the admin"
+            //                             }
+            //                         },
+            //                         required:["email","password"]
+            //                     }
+            //                 }
+            //             }
+            //         },
+            //         responses:{
+            //             201:{
+            //                 description:"Admin created succesfully",
+            //             },
+            //             409:{
+            //                 description:"Email already in use"
+            //             }
+            //         }
+            //     }
+            // },
             "auth/login":{
                 post:{
                     tags:["Auth"],
@@ -163,6 +163,87 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         },
                         409:{
                             description:"Email or Cpf already in use, check error message to know which",
+                        }
+                    }
+                }
+            },
+            "user/update":{
+                post:{
+                    summary:"Update user",
+                    security:[{"BearerAuth":[]}],
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:{
+                                        "name":{
+                                            description:""
+                                        },
+                                        "email":{
+                                            description:""
+                                        },
+                                        "password":{
+                                            description:""
+                                        },
+                                        "cpf":{
+                                            description:""
+                                        },
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        201:{
+                            description:"User updated.",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "name":{
+                                                description:"If the user updated their name, this is the updated name of the user"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        404:{
+                            description:"User not found"
+                        },
+                        409:{
+                            description:"Email or Cpf is already in use. Check route for detail."
+                        }
+                    }
+                }
+            },
+            "user/get":{
+                get:{
+                    summary:"Get the user info",
+                    security:[{"BearerAuth":[]}],
+                    responses:{
+                        200:{
+                            description:"Success",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "cpf":{
+
+                                            },
+                                            "name":{
+
+                                            },
+                                            "phoneNumber":{
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        404:{
+                            description:"User not found"
                         }
                     }
                 }

@@ -1,8 +1,9 @@
-import { user } from "@prisma/client";
+import { roles, user } from "@prisma/client";
 import { UserRepository } from "../../repositories/UserRepository";
 import { EmailAlreadyInUseError } from "../../errors/emailAlreadyInUseError";
 import { UserAlreadyExistsError } from "../../errors/userAlreadyExistsError";
 import { hash } from "bcryptjs";
+import { randomUUID } from "crypto";
 
 interface CreateUserParam {
     cpf: string,
@@ -36,9 +37,11 @@ export class CreateUserService {
         const user = await this.userRepo.create({
             cpf,
             name,
+            role:"instructor",
             email,
             password:hash_password,
             phone_number:phoneNumber,
+            belt_id:randomUUID(),
         });
 
         return {
