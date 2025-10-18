@@ -9,6 +9,7 @@ interface CreateUserParam {
     cpf: string,
     name: string,
     email: string,
+    belt_id: string,
     password: string,
     phoneNumber: string | null,
 }
@@ -21,6 +22,7 @@ export class CreateUserService {
         email,
         password,
         phoneNumber,
+        belt_id,
     }: CreateUserParam){
         const doesCpfInUse = await this.userRepo.findByCpf(cpf);
         if(doesCpfInUse){
@@ -41,7 +43,7 @@ export class CreateUserService {
             email,
             password:hash_password,
             phone_number:phoneNumber,
-            belt_id:randomUUID(),
+            belt_id,
         });
 
         return {

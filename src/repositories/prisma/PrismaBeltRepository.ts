@@ -1,6 +1,7 @@
 import { $Enums, belt } from "@prisma/client";
 import { BeltRepository } from "../BeltRepository";
 import { prisma } from "../../lib/prisma";
+import { Colors } from "../../lib/types/colors";
 
 export class PrismaBeltRepository implements BeltRepository {
     async create(data: belt): Promise<belt> {
@@ -18,6 +19,17 @@ export class PrismaBeltRepository implements BeltRepository {
         })
     }
 
+    async updateMany(color: Colors, data: Partial<belt>): Promise<boolean> {
+        const result = await prisma.belt.updateMany({
+            data,
+            where:{
+                color,
+            }
+        })
+
+        return (result.count ? true : false)
+    }
+
     async findById(id: string): Promise<belt | null> {
         return prisma.belt.findUnique({
             where:{
@@ -26,15 +38,11 @@ export class PrismaBeltRepository implements BeltRepository {
         })
     }
 
-    async findByStudentId(id: string): Promise<belt | null> {
-        return prisma.belt.findFirst({
+    async searchByColor(color: Colors): Promise<belt[]> {
+        return prisma.belt.findMany({
             where:{
-                students:{
-                    some:{
-                        id,
-                    }
-                }
-            }
+                color,
+            },
         })
     }
 

@@ -3,6 +3,7 @@ import { EntityNotFoundError } from "../../errors/entityNotFoundError";
 import { UserRepository } from "../../repositories/UserRepository";
 import { IncorrectPasswordError } from "../../errors/passwordIncorrectError";
 import { genToken } from "../../utils/jwtToken";
+import { ADMID, USRID } from "../../lib/env";
 
 interface Params {
     email: string,
@@ -27,6 +28,7 @@ export class LoginService {
 
         const token = genToken({
             id:doesUserExists.id,
+            role:(doesUserExists.role==="admin"?ADMID:USRID),
         });
 
         return {

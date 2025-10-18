@@ -12,9 +12,8 @@ export class PrismaUserRepository implements UserRepository {
                 name,
                 role,
                 belt:{
-                    create:{
+                    connect:{
                         id:belt_id,
-                        color:"white",
                     }
                 },
                 email,

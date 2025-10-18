@@ -9,11 +9,12 @@ export async function UpdateUserController(request: FastifyRequest, reply: Fasti
     try {
         const id = String(request.user);
     
-        const {cpf,email,name,password} = z.object({
+        const {cpf,email,name,password,phoneNumber} = z.object({
             cpf: z.string().optional(),
             email: z.email().optional(),
             name: z.string().optional(),
-            password: z.string().min(6).optional()
+            password: z.string().min(6).optional(),
+            phoneNumber: z.string().optional(),
         }).parse(request.body);
 
         const userRepo = new PrismaUserRepository();
@@ -23,7 +24,8 @@ export async function UpdateUserController(request: FastifyRequest, reply: Fasti
             cpf,
             email,
             name,
-            password
+            password,
+            phoneNumber,
         })
 
         reply.status(201).send({
