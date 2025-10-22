@@ -15,7 +15,7 @@ export class CreateClassService {
     }: createClassParams){
         const doesUserExists = await this.userRepo.findById(instructor_id);
         if(!doesUserExists){
-            throw new EntityNotFoundError("User");
+            throw new EntityNotFoundError("Instructor");
         }
 
         this.classRepo.create({

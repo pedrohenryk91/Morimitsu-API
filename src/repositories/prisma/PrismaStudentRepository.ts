@@ -48,31 +48,32 @@ export class PrismaStudentRepository implements StudentRepository {
 
     async connectManyToClass(ids: string[], classId: string): Promise<void> {
         await prisma.$transaction(async (p) => {
-            for (const id of ids){
+            const operations = ids.map((id) =>
                 p.student.update({
-                    where:{
+                    where: {
                         id,
                     },
-                    data:{
-                        class:{
-                            connect:{
-                                id:classId,
-                            }
-                        }
-                    }
+                    data: {
+                        class: {
+                            connect: {
+                                id: classId
+                            },
+                        },
+                    },
                 })
-            }
-        })
+            )
+            await Promise.all(operations);
+        });
     }
 
     async update(id: string, data: Partial<Student>): Promise<student | null> {
-        const {ifce_registration,guardian_number,current_fq,phone_number,full_name,nickname,birthday,belt_id,cpf} = data;
+        const {guardian_name,guardian_number,current_fq,phone_number,full_name,nickname,birthday,belt_id,cpf} = data;
         return prisma.student.update({
             where:{
                 id,
             },
             data:{
-                ifce_registration,
+                guardian_name,
                 guardian_number,
                 current_fq,
                 phone_number,

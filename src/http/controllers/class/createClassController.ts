@@ -16,7 +16,7 @@ export async function CreateClassController(request: FastifyRequest, reply: Fast
         const classRepo = new PrismaClassRepository();
         const service = new CreateClassService(classRepo,userRepo);
 
-        service.execute({
+        await service.execute({
             name,
             instructor_id:instructorId,
         });

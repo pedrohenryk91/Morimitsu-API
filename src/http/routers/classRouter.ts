@@ -1,8 +1,9 @@
 import { FastifyInstance } from "fastify";
 import { verifyAdminAuthToken } from "../middlewares/verifyAdminAuthToken";
-import { CreateClassController } from "../controllers/class/CreateClassController";
+import { CreateClassController } from "../controllers/class/createClassController";
 import { verifyAuthToken } from "../middlewares/verifyAuthToken";
 import { AddStudentsToClassController } from "../controllers/class/addStudentsToClassController";
+import { getClassStudentsController } from "../controllers/class/getClassStudentsController";
 
 export async function classRouter(app: FastifyInstance) {
     app.route({
@@ -16,5 +17,11 @@ export async function classRouter(app: FastifyInstance) {
         method:["PUT"],
         preHandler:verifyAuthToken,
         handler:AddStudentsToClassController,
+    })
+    app.route({
+        url:"/get/students/:classId",
+        method:["GET"],
+        preHandler:verifyAuthToken,
+        handler:getClassStudentsController,
     })
 }

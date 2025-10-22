@@ -350,6 +350,69 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
+            "class/get/students/:classId":{
+                get:{
+                    tags:["Class"],
+                    responses:{
+                        200:{
+                            description:"Success",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "result":{
+                                                type:"array",
+                                                items:{
+                                                    properties:{
+                                                        "id":{
+                                                            description:"Student id"
+                                                        },
+                                                        "cpf":{
+                                                            description:""
+                                                        },
+                                                        "gender":{
+                                                            description:""
+                                                        },
+                                                        "birthday":{
+                                                            type:"string",
+                                                            format:"date-time",
+                                                            description:"Student birthday date"
+                                                        },
+                                                        "nickname":{
+                                                            description:""
+                                                        },
+                                                        "full_name":{
+                                                            description:""
+                                                        },
+                                                        "current_fq":{
+                                                            description:""
+                                                        },
+                                                        "phone_number":{
+                                                            description:""
+                                                        },
+                                                        "guardian_name":{
+                                                            description:""
+                                                        },
+                                                        "guardian_phone":{
+                                                            description:""
+                                                        },
+                                                        "belt_id":{
+                                                            description:""
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        404:{
+                            description:"Class was not found"
+                        }
+                    }
+                }
+            },
             "belt/update":{
                 patch:{
                     summary:"Update belt route",

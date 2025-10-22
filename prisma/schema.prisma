@@ -67,7 +67,7 @@ model student {
   gender gender
   nickname String
   full_name String
-  ifce_registration String @unique
+  guardian_name String @unique
   phone_number String?
   guardian_number String?
   birthday DateTime

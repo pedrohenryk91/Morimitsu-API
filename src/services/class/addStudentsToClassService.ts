@@ -20,14 +20,7 @@ export class AddStudentsToClassService {
 
         const doesStudentsExists = await this.studentRepo.findManyById(studentsIds);
         if(!doesStudentsExists.length){
-            throw new EntityNotFoundError("All students")
-        }
-        if(doesStudentsExists.length){
-            doesStudentsExists.map((student)=>{
-                if(!(student.id in studentsIds)){
-                    throw new EntityNotFoundError(`Student ${student.full_name}`)
-                }
-            })
+            throw new EntityNotFoundError("Student")
         }
 
         await this.studentRepo.connectManyToClass(studentsIds, classId);

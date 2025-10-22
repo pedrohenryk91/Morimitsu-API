@@ -6,7 +6,7 @@ export type Student = {
     gender: gender;
     nickname: string;
     full_name: string;
-    ifce_registration: string;
+    guardian_name: string;
     phone_number: string | null;
     guardian_number: string | null;
     birthday: Date;
