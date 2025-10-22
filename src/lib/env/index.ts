@@ -3,7 +3,7 @@ import z from "zod"
 
 dotenv.config({override:true})
 
-export const {NODE_ENV,HOST,PORT,JWT_SECRET,ADMIN_EMAIL,ADMIN_PASSWORD,REDIS_PASSWORD} = z.object({
+export const {NODE_ENV,HOST,PORT,JWT_SECRET,ADMIN_EMAIL,ADMIN_PASSWORD,REDIS_PASSWORD,ADMID,USRID} = z.object({
     NODE_ENV:z.enum(["dev","deploy","test"]),
     PORT:z.string(),
     HOST:z.string(),
@@ -11,4 +11,6 @@ export const {NODE_ENV,HOST,PORT,JWT_SECRET,ADMIN_EMAIL,ADMIN_PASSWORD,REDIS_PAS
     ADMIN_PASSWORD:z.string(),
     ADMIN_EMAIL:z.string(),
     REDIS_PASSWORD:z.string(),
+    ADMID:z.string(),
+    USRID:z.string()
 }).parse(process.env)

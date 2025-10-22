@@ -1,13 +1,15 @@
-import { user } from "@prisma/client";
+import { roles, user } from "@prisma/client";
 import { UserRepository } from "../../repositories/UserRepository";
 import { EmailAlreadyInUseError } from "../../errors/emailAlreadyInUseError";
 import { UserAlreadyExistsError } from "../../errors/userAlreadyExistsError";
 import { hash } from "bcryptjs";
+import { randomUUID } from "crypto";
 
 interface CreateUserParam {
     cpf: string,
     name: string,
     email: string,
+    belt_id: string,
     password: string,
     phoneNumber: string | null,
 }
@@ -20,6 +22,7 @@ export class CreateUserService {
         email,
         password,
         phoneNumber,
+        belt_id,
     }: CreateUserParam){
         const doesCpfInUse = await this.userRepo.findByCpf(cpf);
         if(doesCpfInUse){
@@ -36,9 +39,11 @@ export class CreateUserService {
         const user = await this.userRepo.create({
             cpf,
             name,
+            role:"instructor",
             email,
             password:hash_password,
             phone_number:phoneNumber,
+            belt_id,
         });
 
         return {

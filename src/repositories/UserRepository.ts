@@ -1,10 +1,7 @@
 import { Prisma, user } from "@prisma/client"
+import { DefaultRepository } from "./DefaultRepository"
 
-export interface UserRepository {
-    create(data: Prisma.userCreateInput): Promise<user>
-    findById(id: string): Promise<user | null>
+export interface UserRepository extends DefaultRepository<user, string> {
     findByCpf(cpf: string): Promise<user | null>
     findByEmail(email: string): Promise<user | null>
-    update(id: string, data: Partial<user>): Promise<user | null>
-    delete(id: string): Promise<void>
 }

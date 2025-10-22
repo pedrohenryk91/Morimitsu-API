@@ -7,10 +7,11 @@ import { CreateUserService } from "../../../services/user/createUserService";
 
 export async function CreateUserController(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const {cpf,email,name,password,phoneNumber} = z.object({
+        const {cpf,email,name,password,belt_id,phoneNumber} = z.object({
             cpf: z.string(),
             name: z.string(),
             email: z.email(),
+            belt_id: z.string(),
             password: z.string().min(6),
             phoneNumber: z.string().optional(),
         }).parse(request.body);
@@ -23,6 +24,7 @@ export async function CreateUserController(request: FastifyRequest, reply: Fasti
             email,
             name,
             password,
+            belt_id,
             phoneNumber:(phoneNumber?phoneNumber:null),
         });
 

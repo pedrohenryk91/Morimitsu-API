@@ -18,16 +18,64 @@ export class PrismaStudentRepository implements StudentRepository {
         })
     }
 
+    async findByBeltId(id: string): Promise<student[]> {
+        return prisma.student.findMany({
+            where:{
+                belt_id:id,
+            }
+        })
+    }
+
+    async findManyById(ids: string[]): Promise<student[]> {
+        return prisma.student.findMany({
+            where:{
+                id:{ in: ids },
+            }
+        })
+    }
+
+    async findByClassId(classId: string): Promise<student[]> {
+        return prisma.student.findMany({
+            where:{
+                class:{
+                    some:{
+                        id:classId,
+                    }
+                }
+            }
+        })
+    }
+
+    async connectManyToClass(ids: string[], classId: string): Promise<void> {
+        await prisma.$transaction(async (p) => {
+            const operations = ids.map((id) =>
+                p.student.update({
+                    where: {
+                        id,
+                    },
+                    data: {
+                        class: {
+                            connect: {
+                                id: classId
+                            },
+                        },
+                    },
+                })
+            )
+            await Promise.all(operations);
+        });
+    }
+
     async update(id: string, data: Partial<Student>): Promise<student | null> {
-        const {ifce_registration,guardian_number,goal_frequency,phone_number,full_name,nickname,birthday,belt_id,cpf} = data;
+        const {guardian_name,guardian_number,current_fq,phone_number,full_name,nickname,birthday,belt_id,cpf} = data;
         return prisma.student.update({
             where:{
                 id,
             },
             data:{
-                ifce_registration,
+                guardian_name,
                 guardian_number,
-                goal_frequency,
+                current_fq,
                 phone_number,
                 full_name,
                 birthday,
@@ -37,6 +85,7 @@ export class PrismaStudentRepository implements StudentRepository {
             },
         })
     }
+
     async delete(id: string): Promise<void> {
         prisma.student.delete({
             where:{

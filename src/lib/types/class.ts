@@ -1,4 +1,4 @@
-export type Grade = {
+export type Class = {
     name: string;
     id: string;
 }
