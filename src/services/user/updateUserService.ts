@@ -9,6 +9,7 @@ interface UpdateUserParam {
     name?: string,
     password?: string,
     email?: string,
+    phoneNumber?:string,
 }
 
 export class UpdateUserService {
@@ -18,6 +19,7 @@ export class UpdateUserService {
         email,
         name,
         password,
+        phoneNumber,
     }: UpdateUserParam){
         const doesUserExists = await this.userRepo.findById(id);
         if(!doesUserExists){
@@ -48,6 +50,7 @@ export class UpdateUserService {
             email,
             name,
             password:hash_password,
+            phone_number:phoneNumber,
         })
 
     }

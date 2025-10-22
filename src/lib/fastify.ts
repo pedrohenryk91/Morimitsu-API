@@ -8,6 +8,8 @@ import fastifyCors from "@fastify/cors";
 import fastifyRedis from "@fastify/redis";
 import { authRouter } from "../http/routers/authRouter";
 import { userRouter } from "../http/routers/userRouter";
+import { beltRouter } from "../http/routers/beltRouter";
+import { classRouter } from "../http/routers/classRouter";
 
 export const app = fastify();
 
@@ -41,6 +43,14 @@ app.register(authRouter, {
 app.register(userRouter, {
     prefix:"/user",
 })
+
+app.register(beltRouter, {
+    prefix:"/belt",
+})
+
+app.register(classRouter, {
+    prefix:"/class",
+});
 
 app.setErrorHandler((error, request, reply) => {
     reply.status(error.statusCode || 500).send({

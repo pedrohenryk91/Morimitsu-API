@@ -8,6 +8,11 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum gender {
+  man
+  woman
+}
+
 enum roles {
   admin
   instructor
@@ -52,19 +57,21 @@ model user {
   belt_id String
 
   belt belt @relation(fields: [belt_id], references: [id])
+  classes classes[]
   @@map("tb_user")
 }
 
 model student {
   id String @id @default(uuid())
   cpf String @unique
+  gender gender
   nickname String
   full_name String
-  ifce_registration String @unique
+  guardian_name String @unique
   phone_number String?
   guardian_number String?
   birthday DateTime
-  goal_frequency Int
+  current_fq Int @default(0)
   belt_id String
 
   belt belt @relation(fields: [belt_id], references: [id])
@@ -77,6 +84,7 @@ model belt {
   id String @id
   color colors
   rate Int @default(0)
+  rq_frequency Int @default(15)
 
   user user[]
   students student[]
@@ -107,7 +115,9 @@ model meeting {
 model classes {
   id String @id @default(uuid())
   name String @unique
+  instructor_id String
 
+  user user @relation(references: [id], fields: [instructor_id])
   students student[]
   meeting meeting[]
 }
