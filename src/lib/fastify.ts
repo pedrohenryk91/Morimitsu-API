@@ -10,6 +10,7 @@ import { authRouter } from "../http/routers/authRouter";
 import { userRouter } from "../http/routers/userRouter";
 import { beltRouter } from "../http/routers/beltRouter";
 import { classRouter } from "../http/routers/classRouter";
+import { studentRouter } from "../http/routers/studentRouter";
 
 export const app = fastify();
 
@@ -51,6 +52,10 @@ app.register(beltRouter, {
 app.register(classRouter, {
     prefix:"/class",
 });
+
+app.register(studentRouter, {
+    prefix:"/student",
+})
 
 app.setErrorHandler((error, request, reply) => {
     reply.status(error.statusCode || 500).send({
