@@ -6,4 +6,5 @@ export interface StudentRepository {
     findById(id: string): Promise<student | null>
     update(id: string, data: Partial<Student>): Promise<student | null>
     delete(id: string): Promise<void>
+    findByCpf(cpf: string): Promise<student | null>
 }

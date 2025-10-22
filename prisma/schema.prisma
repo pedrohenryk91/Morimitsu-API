@@ -1,16 +1,21 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum gender {
+  man
+  woman
+}
+
+enum roles {
+  admin
+  instructor
 }
 
 enum colors {
@@ -34,13 +39,6 @@ enum colors {
   red
 }
 
-model admin {
-  id String @id @default(uuid())
-  username String @unique
-  email String @unique
-  password String
-}
-
 model announcement {
   id String @id
   title String
@@ -55,33 +53,40 @@ model user {
   email String @unique
   password String
   phone_number String?
+  role roles @default(instructor)
+  belt_id String
 
+  belt belt @relation(fields: [belt_id], references: [id])
+  classes classes[]
   @@map("tb_user")
 }
 
 model student {
   id String @id @default(uuid())
   cpf String @unique
+  gender gender
   nickname String
   full_name String
-  ifce_registration String @unique
+  guardian_name String @unique
   phone_number String?
   guardian_number String?
   birthday DateTime
-  goal_frequency Int
+  current_fq Int @default(0)
   belt_id String
 
   belt belt @relation(fields: [belt_id], references: [id])
 
   frequency frequency[]
-  classes grade[]
+  class classes[]
 }
 
 model belt {
   id String @id
   color colors
   rate Int @default(0)
+  rq_frequency Int @default(15)
 
+  user user[]
   students student[]
 }
 
@@ -103,14 +108,16 @@ model meeting {
   date DateTime @default(now())
   class_id String @default("no-class")
 
-  grade grade @relation(fields: [class_id],references: [id],onDelete: SetDefault)
+  class classes @relation(fields: [class_id],references: [id],onDelete: SetDefault)
   frequency frequency[]
 }
 
-model grade {
+model classes {
   id String @id @default(uuid())
   name String @unique
+  instructor_id String
 
+  user user @relation(references: [id], fields: [instructor_id])
   students student[]
-  meeting meeting[]
+  meeting meeting[]
 }

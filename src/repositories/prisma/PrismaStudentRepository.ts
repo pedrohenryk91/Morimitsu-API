@@ -7,7 +7,7 @@ export class PrismaStudentRepository implements StudentRepository {
     async create(data: Student): Promise<student> {
         return prisma.student.create({
             data,
-        })
+        });
     }
 
     async findById(id: string): Promise<student | null> {
@@ -43,5 +43,9 @@ export class PrismaStudentRepository implements StudentRepository {
                 id,
             }
         })
+    }
+
+    async findByCpf(cpf: string): Promise<student | null> {
+        prisma.student.findUnique({where: {cpf}})
     }
 }
