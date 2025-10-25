@@ -415,6 +415,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             },
             "belt/update":{
                 patch:{
+                    tags:["Belt"],
                     summary:"Update belt route",
                     description:"Entenda que cada combinação de cor-grau de faixa é uma linha especifica no banco de dados, logo só quem pode edita-las deverá ser o usuário. Ele só pode alterar o 'rq_frequency', isso é, a quantidade de presenças que um aluno tem que ter naquela faixa pra passar pra próxima faixa.'color' é a cor das faixas que serão alteradas.",
                     security:[{"BearerAuth":[]}],
@@ -446,7 +447,52 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         }
                     }
                 }
+            },
+            "frequency/add":{
+                put:{
+                    tags:["Frequency"],
+                    summary:"Route to add many frequencies",
+                    security:[{"BearerAuth":[]}],
+                    description:"For efficiency, this route is designed to receive many students ids and add the frequency of them all in a same class.",
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:{
+                                        "studentsIds":{
+                                            type:"array",
+                                            items:{
+                                                type:"string",
+                                            },
+                                            description:"The many ids of the students"
+                                        },
+                                        "classId":{
+                                            description:"The id of the class"
+                                        },
+                                        "date":{
+                                            type:"string",
+                                            format:"date-time"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        201:{
+                            description:"Success"
+                        },
+                        404:{
+                            description:"Student id or class wer not found. Check out the error message to know which"
+                        },
+                        500:{
+                            description:"Unknown error"
+                        }
+                    }
+                }
             }
         },
     },
+    hideUntagged: true,
+    exposeHeadRoutes: false
 }

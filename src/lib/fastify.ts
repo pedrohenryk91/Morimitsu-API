@@ -11,6 +11,7 @@ import { userRouter } from "../http/routers/userRouter";
 import { beltRouter } from "../http/routers/beltRouter";
 import { classRouter } from "../http/routers/classRouter";
 import { studentRouter } from "../http/routers/studentRouter";
+import { frequencyRouter } from "../http/routers/frequencyRouter";
 
 export const app = fastify();
 
@@ -34,7 +35,7 @@ app.register(fastifyCors, {
 app.register(fastifySwagger, SwaggerDocumentationOptions);
 
 app.register(fastifySwaggerUi, {
-    routePrefix:"/docs"
+    routePrefix:"/docs",
 });
 
 app.register(authRouter, {
@@ -55,6 +56,10 @@ app.register(classRouter, {
 
 app.register(studentRouter, {
     prefix:"/student",
+})
+
+app.register(frequencyRouter, {
+    prefix:"/frequency"
 })
 
 app.setErrorHandler((error, request, reply) => {

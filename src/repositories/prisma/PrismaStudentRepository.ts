@@ -95,6 +95,6 @@ export class PrismaStudentRepository implements StudentRepository {
     }
 
     async findByCpf(cpf: string): Promise<student | null> {
-        prisma.student.findUnique({where: {cpf}})
+        return prisma.student.findUnique({where: {cpf}})
     }
 }

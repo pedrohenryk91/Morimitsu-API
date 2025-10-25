@@ -91,26 +91,25 @@ model belt {
 }
 
 model frequency {
+  id String @id @default(uuid())
   student_id String
-  meeting_id String
+  class_id String
   date DateTime @default(now())
 
   student student @relation(fields: [student_id],references: [id])
-  meeting meeting @relation(fields: [meeting_id],references: [id])
-
-  @@id([student_id,meeting_id])
+  class classes @relation(fields: [class_id],references: [id])
 }
 
-model meeting {
-  id String @id @default(uuid())
-  name String
-  description String?
-  date DateTime @default(now())
-  class_id String @default("no-class")
+// model meeting {
+//   id String @id @default(uuid())
+//   name String
+//   description String?
+//   date DateTime @default(now())
+//   class_id String @default("no-class")
 
-  class classes @relation(fields: [class_id],references: [id],onDelete: SetDefault)
-  frequency frequency[]
-}
+//   class classes @relation(fields: [class_id],references: [id],onDelete: SetDefault)
+//   frequency frequency[]
+// }
 
 model classes {
   id String @id @default(uuid())
@@ -119,5 +118,5 @@ model classes {
 
   user user @relation(references: [id], fields: [instructor_id])
   students student[]
-  meeting meeting[]
+  frequency frequency[]
 }

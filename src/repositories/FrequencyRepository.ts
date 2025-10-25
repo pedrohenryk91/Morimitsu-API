@@ -1,12 +1,9 @@
 import { frequency } from "@prisma/client";
 import { DefaultRepository } from "./DefaultRepository";
+import { CreateManyFrequenciesParams } from "../lib/interfaces/createManyFrequenciesParams";
 
-export type CompositeId = {
-    student_id: string,
-    meeting_id: string,
-}
-
-export interface FrequencyRepository extends DefaultRepository<frequency, CompositeId> {
+export interface FrequencyRepository extends DefaultRepository<frequency, string> {
+    createMany(data: CreateManyFrequenciesParams): Promise<void>
     findByStudentId(id: string): Promise<frequency[]>
-    findByMeetingId(id: string): Promise<frequency[]>
+    findByClassId(id: string): Promise<frequency[]>
 }
