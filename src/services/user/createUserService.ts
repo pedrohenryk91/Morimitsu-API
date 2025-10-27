@@ -4,6 +4,7 @@ import { EmailAlreadyInUseError } from "../../errors/emailAlreadyInUseError";
 import { UserAlreadyExistsError } from "../../errors/userAlreadyExistsError";
 import { hash } from "bcryptjs";
 import { randomUUID } from "crypto";
+import { CpfAlreadyRegistered } from "../../errors/cpfAlreadyRegistered";
 
 interface CreateUserParam {
     cpf: string,
@@ -26,7 +27,7 @@ export class CreateUserService {
     }: CreateUserParam){
         const doesCpfInUse = await this.userRepo.findByCpf(cpf);
         if(doesCpfInUse){
-            throw new UserAlreadyExistsError("CPF");
+            throw new CpfAlreadyRegistered();
         }
 
         const doesEmailInUse = await this.userRepo.findByEmail(email);

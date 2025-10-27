@@ -1,6 +1,47 @@
 import { SwaggerOptions } from "@fastify/swagger";
 import { jsonSchemaTransform } from "fastify-type-provider-zod";
 
+const studentObject: any = {
+    cpf:{
+        description:"Student cpf",
+    },
+    gender:{
+        enum:[
+            "man",
+            "woman"
+        ],
+        example:"man | woman",
+        
+    },
+    birthday:{
+        type:"string",
+        format:"date-time",
+        description:"Student birthday"
+    },
+    nickname:{
+        description:"Student nickname"
+    },
+    currentFq:{
+        type:"number",
+        description:"The initial number of the student frequency"
+    },
+    fullname:{
+        description:"student full name"
+    },
+    guardianName:{
+        description:"Full name of the legal guardian of the student"
+    },
+    phoneNumber:{
+        description:"Phone number of the student"
+    },
+    guardianNumber:{
+        description:"Phone number of the legal guardian"
+    },
+    beltId:{
+        description:"Id of the student belt"
+    }
+}
+
 export const SwaggerDocumentationOptions:SwaggerOptions = {
     openapi:{
         info:{
@@ -96,7 +137,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "auth/login":{
                 post:{
                     tags:["Auth"],
-                    summary:"Login to normal user's",
+                    summary:"Login",
                     requestBody:{
                         content:{
                             "application/json":{
@@ -106,7 +147,8 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                             description:"The user email"
                                         },
                                         "password":{
-                                            description:"The user password"
+                                            description:"The user password",
+                                            example:"abcdef"
                                         }
                                     },
                                     required:["email","password"]
@@ -181,8 +223,49 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "user/update":{
+            "user/create/from/student":{
                 post:{
+                    tags:["User"],
+                    summary:"Route to create an user from a student, only admin can access",
+                    security:[{"BearerAuth":[]}],
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:{
+                                        "studentId":{
+                                            description:"Id of the student"
+                                        },
+                                        "email":{
+                                            description:"User Email"
+                                        },
+                                        "password":{
+                                            description:"User password"
+                                        },
+                                    },
+                                    required:["studentId","email","password",]
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        201:{
+                            description:"User created"
+                        },
+                        403:{
+                            description:"User did not have permission to access the route due to not being an admin."
+                        },
+                        409:{
+                            description:"Email or Cpf already in use, check error message to know which",
+                        },
+                        500:{
+                            description:"Unknown error"
+                        }
+                    }
+                }
+            },
+            "user/update":{
+                put:{
                     tags:["User"],
                     summary:"Update user",
                     security:[{"BearerAuth":[]}],
@@ -490,7 +573,35 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         }
                     }
                 }
-            }
+            },
+            "student/create":{
+                post:{
+                    tags:["Student"],
+                    summary:"Route to create an student",
+                    security:[{"BearerAuth":[]}],
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:studentObject,
+                                    required:["cpf","gender","nickname","currentFq","fullName","guardianName","birthday","beltId"]
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        201:{
+                            description:"Student created",
+                        },
+                        409:{
+                            description:"Cpf already registered",
+                        },
+                        500:{
+                            description:"Internal server error"
+                        }
+                    }
+                }
+            },
         },
     },
     hideUntagged: true,
