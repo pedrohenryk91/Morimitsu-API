@@ -11,7 +11,7 @@ export async function studentRouter(app: FastifyInstance) {
         handler:registerStudentController,
     });
     app.route({
-        url:"/get",
+        url:"/get/:<studentName>",
         method: ["GET"],
         preHandler:verifyAuthToken,
         handler:getStudentData,
