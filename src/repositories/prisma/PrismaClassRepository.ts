@@ -26,8 +26,8 @@ export class PrismaClassRepository implements ClassRepository {
         })
     }
 
-    async delete(id: string): Promise<void> {
-        prisma.classes.delete({
+    async delete(id: string): Promise<classes | null> {
+        return prisma.classes.delete({
             where:{
                 id,
             }

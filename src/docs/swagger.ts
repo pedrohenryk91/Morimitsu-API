@@ -5,6 +5,10 @@ const studentObject: any = {
     cpf:{
         description:"Student cpf",
     },
+    age:{
+        type:"number",
+        description:"Student age"
+    },
     gender:{
         enum:[
             "man",
@@ -59,81 +63,6 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             }
         },
         paths:{
-            // "admin/login":{
-            //     "post":{
-            //         tags:["Admin"],
-            //         summary:"Login route for the admin",
-            //         description:"Login route. Admin log in.",
-            //         requestBody:{
-            //             content:{
-            //                 "application/json":{
-            //                     schema:{
-            //                         properties:{
-            //                             email:{ description:"The admin's email" },
-            //                             password:{ description:"The admin's password" },
-            //                         },
-            //                         required:["email","password"],
-            //                     }
-            //                 }
-            //             }
-            //         },
-            //         responses:{
-            //             201:{
-            //                 description:"Success, returns the token of the logged one.",
-            //                 content:{
-            //                     "application/json":{
-            //                         schema:{
-            //                             properties:{
-            //                                 "token":{
-            //                                     type:"string",
-            //                                     description:"The authorization token"
-            //                                 },
-            //                             }
-            //                         }
-            //                     }
-            //                 }
-            //             },
-            //             400:{
-            //                 description:"The password is incorrect."
-            //             },
-            //             404:{
-            //                 description:"The admin email was not found."
-            //             },
-            //         }
-            //     }
-            // },
-            // "admin/create":{
-            //     "post":{
-            //         tags:["Admin"],
-            //         summary:"Route to create the admins",
-            //         description:"",
-            //         requestBody:{
-            //             content:{
-            //                 "application/json":{
-            //                     schema:{
-            //                         properties:{
-            //                             "email":{
-            //                                 description:"The admin email"
-            //                             },
-            //                             "password":{
-            //                                 description:"The password of the admin"
-            //                             }
-            //                         },
-            //                         required:["email","password"]
-            //                     }
-            //                 }
-            //             }
-            //         },
-            //         responses:{
-            //             201:{
-            //                 description:"Admin created succesfully",
-            //             },
-            //             409:{
-            //                 description:"Email already in use"
-            //             }
-            //         }
-            //     }
-            // },
             "auth/login":{
                 post:{
                     tags:["Auth"],
@@ -584,7 +513,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                             "application/json":{
                                 schema:{
                                     properties:studentObject,
-                                    required:["cpf","gender","nickname","currentFq","fullName","guardianName","birthday","beltId"]
+                                    required:["cpf","age","gender","nickname","currentFq","fullName","guardianName","birthday","beltId"]
                                 }
                             }
                         }
@@ -602,6 +531,65 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
+            "student/search":{
+                get:{
+                    summary:"Route to search students by name",
+                    security:[{"BearerAuth":[]}],
+                    parameters:[
+                       {
+                            in:"query",
+                            name:"fullName",
+                            description:"Full name",
+                            schema:{
+                                type:"string",
+                            }
+                       },
+                       {
+                            in:"query",
+                            name:"nickname",
+                            description:"Nickname",
+                            schema:{
+                                type:"string",
+                            }
+                       },
+                       {
+                            in:"query",
+                            name:"minAge",
+                            description:"Min age for age range search",
+                            schema:{
+                                type:"number"
+                            }
+                       },
+                       {
+                            in:"query",
+                            name:"maxAge",
+                            description:"Max age for age range",
+                            schema:{
+                                type:"number"
+                            }
+                       }
+                    ],
+                    responses:{
+                        200:{
+                            description:"Success",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            students:{
+                                                type:"array",
+                                                items:{
+                                                    properties:studentObject,
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         },
     },
     hideUntagged: true,

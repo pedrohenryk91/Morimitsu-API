@@ -64,6 +64,7 @@ model user {
 model student {
   id String @id @default(uuid())
   cpf String @unique
+  age Int @default(15)
   gender gender
   nickname String
   full_name String
@@ -92,24 +93,14 @@ model belt {
 
 model frequency {
   id String @id @default(uuid())
-  student_id String
+  student_cpf String
+  student_id String?
   class_id String
   date DateTime @default(now())
 
-  student student @relation(fields: [student_id],references: [id])
+  student student? @relation(fields: [student_id],references: [id], onDelete: SetNull)
   class classes @relation(fields: [class_id],references: [id])
 }
-
-// model meeting {
-//   id String @id @default(uuid())
-//   name String
-//   description String?
-//   date DateTime @default(now())
-//   class_id String @default("no-class")
-
-//   class classes @relation(fields: [class_id],references: [id],onDelete: SetDefault)
-//   frequency frequency[]
-// }
 
 model classes {
   id String @id @default(uuid())

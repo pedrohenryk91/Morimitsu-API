@@ -5,6 +5,7 @@ import { getUserInfoController } from "../controllers/user/getUserInfoController
 import { UpdateUserController } from "../controllers/user/updateUserController";
 import { verifyAdminAuthToken } from "../middlewares/verifyAdminAuthToken";
 import { createUserFromStudentController } from "../controllers/user/createUserFromStudentController";
+import { deleteUserController } from "../controllers/user/deleteUserController";
 
 export async function userRouter(app: FastifyInstance){
     app.route({
@@ -30,5 +31,11 @@ export async function userRouter(app: FastifyInstance){
         method:["PUT"],
         preHandler:verifyAuthToken,
         handler:UpdateUserController,
+    })
+    app.route({
+        url:"/delete/:id",
+        method:["DELETE"],
+        preHandler:verifyAdminAuthToken,
+        handler:deleteUserController,
     })
 }

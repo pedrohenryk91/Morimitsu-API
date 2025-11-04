@@ -2,6 +2,7 @@ import { student } from "@prisma/client";
 import { Student } from "../../lib/types/student";
 import { StudentRepository } from "../StudentRepository";
 import { prisma } from "../../lib/prisma";
+import { searchStudentParams } from "../../lib/interfaces/searchStudentsParams";
 
 export class PrismaStudentRepository implements StudentRepository {
     async create(data: Student): Promise<student> {
@@ -66,6 +67,24 @@ export class PrismaStudentRepository implements StudentRepository {
         });
     }
 
+    async search(data: searchStudentParams): Promise<student[]> {
+        const {fullName,maxAge,minAge,nickname} = data
+        return prisma.student.findMany({
+            where:{
+                full_name:{
+                    contains:fullName
+                },
+                nickname:{
+                    contains:nickname
+                },
+                age:{
+                    gte:minAge,
+                    lte:maxAge,
+                }
+            }
+        })
+    }
+
     async update(id: string, data: Partial<Student>): Promise<student | null> {
         const {guardian_name,guardian_number,current_fq,phone_number,full_name,nickname,birthday,belt_id,cpf} = data;
         return prisma.student.update({
@@ -86,8 +105,8 @@ export class PrismaStudentRepository implements StudentRepository {
         })
     }
 
-    async delete(id: string): Promise<void> {
-        await prisma.student.delete({
+    async delete(id: string): Promise<student | null> {
+        return await prisma.student.delete({
             where:{
                 id,
             }
