@@ -46,6 +46,17 @@ export class PrismaStudentRepository implements StudentRepository {
         })
     }
 
+    async findByName(studentName: string): Promise<student[]> {
+        return prisma.student.findMany({
+            where: {
+                full_name: {
+                    contains: studentName,
+                    mode: "insensitive"
+                }
+            }
+        })
+    }
+
     async connectManyToClass(ids: string[], classId: string): Promise<void> {
         await prisma.$transaction(async (p) => {
             const operations = ids.map((id) =>
@@ -95,6 +106,10 @@ export class PrismaStudentRepository implements StudentRepository {
     }
 
     async findByCpf(cpf: string): Promise<student | null> {
-        return prisma.student.findUnique({where: {cpf}})
+        return prisma.student.findUnique({
+            where: {
+                cpf
+            }
+        })
     }
 }

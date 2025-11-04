@@ -8,4 +8,5 @@ export interface StudentRepository extends DefaultRepository<student, string> {
     connectManyToClass(ids: string[], classId: string): Promise<void>
     findByClassId(classId: string): Promise<student[]>
     findByCpf(cpf: string): Promise<student | null>
+    findByName(studentName: string): Promise<student[]>
 }
