@@ -18,6 +18,7 @@
     "@fastify/swagger-ui": "^5.2.3",
     "@prisma/client": "^6.15.0",
     "@types/node": "^24.3.0",
+    "@types/nodemailer": "^7.0.3",
     "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.1",
     "fastify": "^5.6.1",

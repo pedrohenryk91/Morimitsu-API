@@ -298,11 +298,24 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                         "instructorId":{
                                             description:"The id of the instructor of the class (user entity)"
                                         },
+                                        "requiredFq":{
+                                            description:"The required frequency of the class",
+                                            type:"number"
+                                        },
                                         "name":{
                                             description:"Name of the class"
-                                        }
+                                        },
+                                        "type":{
+                                            description:"The class type",
+                                            enum:[
+                                                "kids",
+                                                "normal",
+                                                "mista",
+                                            ],
+                                            examples:["kids","normal","mista"]
+                                        },
                                     },
-                                    required:["instructorId","name"]
+                                    required:["instructorId","name","type"]
                                 }
                             }
                         }

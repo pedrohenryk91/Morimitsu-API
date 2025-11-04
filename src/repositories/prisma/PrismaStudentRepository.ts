@@ -3,6 +3,7 @@ import { Student } from "../../lib/types/student";
 import { StudentRepository } from "../StudentRepository";
 import { prisma } from "../../lib/prisma";
 import { searchStudentParams } from "../../lib/interfaces/searchStudentsParams";
+import { EligibleStudent } from "../../lib/types/eligibleStudent";
 
 export class PrismaStudentRepository implements StudentRepository {
     async create(data: Student): Promise<student> {
@@ -83,6 +84,30 @@ export class PrismaStudentRepository implements StudentRepository {
                 }
             }
         })
+    }
+
+    async countByFrequency(): Promise<EligibleStudent[]> {
+        return prisma.$queryRaw<EligibleStudent[]>`
+            SELECT
+                s."id",
+                s."full_name",
+                s."current_fq",
+                b."color" AS belt_color,
+                b."rq_frequency" AS belt_rq_fq
+            FROM "student" s
+            JOIN "belt" b ON s."belt_id" = b."id"
+            WHERE EXISTS (
+                SELECT 1
+                FROM "_classesTostudent" cs
+                JOIN "classes" c ON cs."A" = c."id"
+                WHERE cs."B" = s."id"
+                AND (
+                    (c."type" = 'kids' AND (c."rq_fq" IS NOT NULL AND s."current_fq" >= c."rq_fq"))
+                    OR
+                    (c."type" IN ('normal','mista') AND s."current_fq" >= b."rq_frequency")
+                )
+            );
+        `;
     }
 
     async update(id: string, data: Partial<Student>): Promise<student | null> {
