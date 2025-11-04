@@ -8,7 +8,7 @@ export async function getStudentData(request: FastifyRequest, reply: FastifyRepl
     try {
         const {studentName} = z.object({
             studentName: z.string()
-        }).parse(request.body)
+        }).parse(request.params)
 
         const prismaStudentRepo = new PrismaStudentRepository()
         const prismaStudent = new GetStudentsService(prismaStudentRepo)
