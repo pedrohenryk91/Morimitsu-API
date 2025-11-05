@@ -3,6 +3,7 @@ import { gender } from "@prisma/client";
 export type Student = {
     id: string;
     cpf: string;
+    age: number;
     gender: gender;
     nickname: string;
     full_name: string;

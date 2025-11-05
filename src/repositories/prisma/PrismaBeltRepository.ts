@@ -46,8 +46,8 @@ export class PrismaBeltRepository implements BeltRepository {
         })
     }
 
-    async delete(id: string): Promise<void> {
-        prisma.belt.delete({
+    async delete(id: string): Promise<belt | null> {
+        return prisma.belt.delete({
             where:{
                 id,
             }

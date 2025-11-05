@@ -1,4 +1,5 @@
 import { EntityNotFoundError } from "../../errors/entityNotFoundError";
+import { StudentData } from "../../lib/interfaces/createManyFrequenciesParams";
 import { ClassRepository } from "../../repositories/ClassRepository";
 import { FrequencyRepository } from "../../repositories/FrequencyRepository";
 import { StudentRepository } from "../../repositories/StudentRepository";
@@ -23,7 +24,8 @@ export class AddFrequencyService {
         if(!doesClassExists){
             throw new EntityNotFoundError("Class");
         }
-
+    
+        let student_data: StudentData[] = []
         for (const id of students_ids){
 
             const doesStudentExists = await this.studentRepo.findById(id);
@@ -34,10 +36,15 @@ export class AddFrequencyService {
             await this.studentRepo.update(id, {
                 current_fq:doesStudentExists.current_fq+1,
             })
+
+            student_data.push({
+                id:doesStudentExists.id,
+                cpf:doesStudentExists.cpf,
+            })
         }
 
         await this.frequencyRepo.createMany({
-            students_ids,
+            students_data:student_data,
             class_id,
             date
         })
