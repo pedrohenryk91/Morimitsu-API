@@ -11,10 +11,11 @@ export class PrismaFrequencyRepository implements FrequencyRepository {
     }
 
     async createMany(data: CreateManyFrequenciesParams): Promise<void> {
-        const ids = data.students_ids
-        const formattedData = ids.map((id) =>{
+        const infos = data.students_data
+        const formattedData = infos.map((info) =>{
             return {
-                student_id:id,
+                student_id:info.id,
+                student_cpf:info.cpf,
                 class_id:data.class_id,
                 date:data.date,
             }
@@ -58,8 +59,8 @@ export class PrismaFrequencyRepository implements FrequencyRepository {
         })
     }
 
-    async delete(id: string): Promise<void> {
-        prisma.frequency.delete({
+    async delete(id: string): Promise<frequency | null> {
+        return prisma.frequency.delete({
             where:{
                 id,
             }

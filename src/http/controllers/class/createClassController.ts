@@ -7,9 +7,11 @@ import { CreateClassService } from "../../../services/class/createClassService";
 
 export async function CreateClassController(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const {name, instructorId} = z.object({
+        const {name, instructorId, classType, requiredFq} = z.object({
             name: z.string(),
             instructorId: z.string(),
+            classType: z.enum(["kids","normal","mista"]),
+            requiredFq: z.number().int().optional(),
         }).parse(request.body);
 
         const userRepo = new PrismaUserRepository();
@@ -19,6 +21,8 @@ export async function CreateClassController(request: FastifyRequest, reply: Fast
         await service.execute({
             name,
             instructor_id:instructorId,
+            type:classType,
+            rq_fq:requiredFq,
         });
 
         reply.status(201).send({
