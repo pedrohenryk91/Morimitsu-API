@@ -4,8 +4,8 @@ import { UserRepository } from "../../repositories/UserRepository";
 export class DeleteUserService {
     constructor(private userRepo: UserRepository){}
     async execute(id: string){
-        const student = this.userRepo.delete(id);
-        if(!student){
+        const user = this.userRepo.delete(id);
+        if(!user){
             throw new EntityNotFoundError("User");
         }
     }

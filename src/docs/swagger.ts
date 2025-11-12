@@ -46,6 +46,44 @@ const studentObject: any = {
     }
 }
 
+const eligibleStudentObject: any = {
+    "id":{
+        description:""
+    },
+    "full_name":{
+        description:""
+    },
+    "current_fq":{
+        description:""
+    },
+    "belt_color":{
+        description:""
+    },
+    "belt_rq_fq":{
+        type:"number",
+        description:"The required frequency of the belt to graduate",
+    },
+    "class_id":{
+        nullable:true,
+    },
+    "class_name":{
+        nullable:true
+    },
+    "class_type":{
+        nullable:true,
+        enum:[
+            "kids",
+            "normal",
+            "mista"
+        ],
+    },
+    "class_rq_fq":{
+        nullable:true,
+        type:"number",
+        description:"The required frequency of the class to graduate"
+    }
+}
+
 export const SwaggerDocumentationOptions:SwaggerOptions = {
     openapi:{
         info:{
@@ -281,6 +319,31 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         },
                         500:{
                             description:"Unknown error"
+                        }
+                    }
+                }
+            },
+            "user/delete/:id":{
+                delete:{
+                    tags:["User"],
+                    parameters:[
+                        {
+                            name:"id",
+                            in:"path",
+                            schema:{
+                                type:"string"
+                            }
+                        }
+                    ],
+                    responses:{
+                        200:{
+                            description:"deleted"
+                        },
+                        404:{
+                            description:"User not found"
+                        },
+                        500:{
+                            description:"Unpredicted error"
                         }
                     }
                 }
@@ -546,6 +609,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             },
             "student/search":{
                 get:{
+                    tags:["Student"],
                     summary:"Route to search students by name",
                     security:[{"BearerAuth":[]}],
                     parameters:[
@@ -599,6 +663,97 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                     }
                                 }
                             }
+                        }
+                    }
+                }
+            },
+            "student/search/gradable":{
+                get:{
+                    tags:["Student"],
+                    responses:{
+                        200:{
+                            description:"Everything went okay",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "result":{
+                                                type:"array",
+                                                items:{
+                                                    properties:eligibleStudentObject,
+                                                }
+                                            }
+                                        },
+                                    }
+                                }
+                            }
+                        },
+                        500:{
+                            description:"Unpredicted error"
+                        }
+                    }
+                }
+            },
+            "student/get/:studentName":{
+                get:{
+                    tags:["Student"],
+                    parameters:[
+                        {
+                            name:"studentName",
+                            in:"path",
+                            schema:{
+                                type:"string",
+                            }
+                        }
+                    ],
+                    responses:{
+                        200:{
+                            description:"Success",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "response":{
+                                                type:"array",
+                                                items:{
+                                                    properties:studentObject,
+                                                }
+                                            }
+                                        },
+                                    }
+                                }
+                            }
+                        },
+                        409:{
+                            description:"Student not found error"
+                        },
+                        500:{
+                            description:"Unpredicted error"
+                        }
+                    }
+                }
+            },
+            "student/delete/:id":{
+                delete:{
+                    tags:["Student"],
+                    parameters:[
+                        {
+                            name:"id",
+                            in:"path",
+                            schema:{
+                                type:"string"
+                            },
+                        }
+                    ],
+                    responses:{
+                        200:{
+                            description:"deleted",
+                        },
+                        404:{
+                            description:"student not found",
+                        },
+                        500:{
+                            description:"Unpredicted error"
                         }
                     }
                 }
