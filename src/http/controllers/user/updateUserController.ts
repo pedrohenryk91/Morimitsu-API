@@ -4,6 +4,8 @@ import { UserAlreadyExistsError } from "../../../errors/userAlreadyExistsError";
 import z from "zod";
 import { PrismaUserRepository } from "../../../repositories/prisma/PrismaUserRepository";
 import { UpdateUserService } from "../../../services/user/updateUserService";
+import { CpfAlreadyRegistered } from "../../../errors/cpfAlreadyRegistered";
+import { EmailAlreadyInUseError } from "../../../errors/emailAlreadyInUseError";
 
 export async function UpdateUserController(request: FastifyRequest, reply: FastifyReply) {
     try {
@@ -39,7 +41,10 @@ export async function UpdateUserController(request: FastifyRequest, reply: Fasti
                 message:err.message,
             })
         }
-        if(err instanceof UserAlreadyExistsError){
+        if(err instanceof UserAlreadyExistsError ||
+           err instanceof EmailAlreadyInUseError ||
+           err instanceof CpfAlreadyRegistered
+        ){
             reply.status(409).send({
                 message:err.message,
             })

@@ -4,6 +4,8 @@ import { CreateClassController } from "../controllers/class/createClassControlle
 import { verifyAuthToken } from "../middlewares/verifyAuthToken";
 import { AddStudentsToClassController } from "../controllers/class/addStudentsToClassController";
 import { getClassStudentsController } from "../controllers/class/getClassStudentsController";
+import { searchClassesController } from "../controllers/class/searchClassesController";
+import { updateClassController } from "../controllers/class/updateClassController";
 
 export async function classRouter(app: FastifyInstance) {
     app.route({
@@ -23,5 +25,17 @@ export async function classRouter(app: FastifyInstance) {
         method:["GET"],
         preHandler:verifyAuthToken,
         handler:getClassStudentsController,
+    })
+    app.route({
+        url:"/update",
+        method:["PUT"],
+        preHandler:verifyAdminAuthToken,
+        handler:updateClassController,
+    })
+    app.route({
+        url:"/search",
+        method:["GET"],
+        preHandler:verifyAuthToken,
+        handler:searchClassesController,
     })
 }

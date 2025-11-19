@@ -1,6 +1,31 @@
 import { SwaggerOptions } from "@fastify/swagger";
 import { jsonSchemaTransform } from "fastify-type-provider-zod";
 
+const classObject: any = {
+    "id":{
+        description:"The id of the class"
+    },
+    "instructorId":{
+        description:"The id of the instructor of the class (user entity)"
+    },
+    "requiredFq":{
+        description:"The required frequency of the class",
+        type:"number"
+    },
+    "name":{
+        description:"Name of the class"
+    },
+    "type":{
+        description:"The class type",
+        enum:[
+            "kids",
+            "normal",
+            "mista",
+        ],
+        examples:["kids","normal","mista"]
+    },
+}
+
 const studentObject: any = {
     cpf:{
         description:"Student cpf",
@@ -497,6 +522,95 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         },
                         404:{
                             description:"Class was not found"
+                        }
+                    }
+                }
+            },
+            "class/search?name=exemplo&type=exemplo":{
+                get:{
+                    tags:["Class"],
+                    parameters:[
+                        {
+                            name:"name",
+                            in:"query",
+                            description:"The name of the class",
+                        },
+                        {
+                            name:"type",
+                            in:"query",
+                            schema:{
+                                enum:[
+                                    "kids",
+                                    "normal",
+                                    "mista",
+                                ]
+                            },
+                            description:"The type of the class"
+                        }
+                    ],
+                    summary:"Search for classes, params in query",
+                    security:[{"BearerAuth":[]}],
+                    description:"Search for classes",
+                    responses:{
+                        200:{
+                            description:"success",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "result":{
+                                                type:"array",
+                                                items:{
+                                                    properties:classObject,
+                                                }
+                                            }
+                                        },
+                                    }
+                                }
+                            }
+                        },
+                        500:{
+                            description:"Erro não previsto"
+                        }
+                    }
+                }
+            },
+            "class/update":{
+                put:{
+                    tags:["Class"],
+                    summary:"Update class route",
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:{
+                                        "classId":{
+                                            description:"Id of the class"
+                                        },
+                                        "name":{
+                                            description:"Fill this with the new name of the class"
+                                        },
+                                        "instructorId":{
+                                            description:"Fill this with the new instructor id"
+                                        },
+                                        "requiredFq":{
+                                            description:"Change the required frequency that the class has"
+                                        }
+                                    },
+                                    required:["classId"]
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        201:{
+                            description:"success"
+                        },
+                        404:{
+                            description:"Class not found"
+                        },
+                        500:{
+                            description:"Erro não previsto"
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 import { classes } from "@prisma/client";
 import { ClassRepository } from "../ClassRepository";
 import { prisma } from "../../lib/prisma";
+import { SearchClassesParams } from "../../lib/interfaces/searchClassesParams";
 
 export class PrismaClassRepository implements ClassRepository {
     async create(data: classes): Promise<classes> {
@@ -13,6 +14,17 @@ export class PrismaClassRepository implements ClassRepository {
         return prisma.classes.findUnique({
             where:{
                 id,
+            }
+        })
+    }
+
+    async search(data: SearchClassesParams): Promise<classes[]> {
+        return prisma.classes.findMany({
+            where:{
+                name:{
+                    contains:data.name
+                },
+                type:data.type,
             }
         })
     }

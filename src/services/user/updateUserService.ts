@@ -3,6 +3,7 @@ import { EmailAlreadyInUseError } from "../../errors/emailAlreadyInUseError";
 import { EntityNotFoundError } from "../../errors/entityNotFoundError";
 import { UserAlreadyExistsError } from "../../errors/userAlreadyExistsError";
 import { UserRepository } from "../../repositories/UserRepository";
+import { CpfAlreadyRegistered } from "../../errors/cpfAlreadyRegistered";
 
 interface UpdateUserParam {
     cpf?: string,
@@ -29,14 +30,14 @@ export class UpdateUserService {
         if(cpf){
             const doesCpfInUse = await this.userRepo.findByCpf(cpf);
             if(doesCpfInUse){
-                throw new UserAlreadyExistsError("CPF");
+                throw new CpfAlreadyRegistered();
             }
         }
 
         if(email){
             const doesEmailAlreadyInUse = await this.userRepo.findByEmail(email);
             if(doesEmailAlreadyInUse){
-                throw new UserAlreadyExistsError("email");
+                throw new EmailAlreadyInUseError();
             }
         }
 
