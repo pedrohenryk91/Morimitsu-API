@@ -7,7 +7,6 @@ import { EditBeltService } from "../../../services/belt/editBeltService";
 
 export async function EditBeltController(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const id = String(request.user);
         const {color,rq_frequency} = z.object({
             color: ZodColors,
             rq_frequency: z.number(),

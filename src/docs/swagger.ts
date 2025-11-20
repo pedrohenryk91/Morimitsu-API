@@ -109,6 +109,37 @@ const eligibleStudentObject: any = {
     }
 }
 
+const reportObject: any = {
+    "result":{
+        type:"array",
+        items:{
+            properties:{
+                "id":{
+                    description:"Id of the report"
+                },
+                "to":{
+                    enum:[
+                        "instructor",
+                        "admin",
+                    ],
+                    description:"If the id is for instructors or admins"
+                },
+                "text":{
+                    description:"The text of the report, this can be null",
+                },
+                "title":{
+                    description:"The title of the report"
+                },
+                "date":{
+                    type:"string",
+                    format:"date-time",
+                    description:"The date of creation of the report",
+                }
+            }
+        }
+    }
+}
+
 export const SwaggerDocumentationOptions:SwaggerOptions = {
     openapi:{
         info:{
@@ -167,7 +198,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "user/create":{
                 post:{
                     tags:["User"],
-                    summary:"Route to create an user, only admin can access",
+                    summary:"Route to create an user (ADMIN ONLY)",
                     security:[{"BearerAuth":[]}],
                     requestBody:{
                         content:{
@@ -218,7 +249,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "user/create/from/student":{
                 post:{
                     tags:["User"],
-                    summary:"Route to create an user from a student, only admin can access",
+                    summary:"Route to create an user from a student (ADMIN ONLY)",
                     security:[{"BearerAuth":[]}],
                     requestBody:{
                         content:{
@@ -351,6 +382,8 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "user/delete/:id":{
                 delete:{
                     tags:["User"],
+                    summary:"Delete a user (ADMIN ONLY)",
+                    security:[{"BearerAuth":[]}],
                     parameters:[
                         {
                             name:"id",
@@ -376,7 +409,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "class/create":{
                 post:{
                     tags:["Class"],
-                    summary:"Only admin can acess, create an new class",
+                    summary:"Create an new class (ADMIN ONLY)",
                     security:[{"BearerAuth":[]}],
                     requestBody:{
                         content:{
@@ -466,6 +499,8 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "class/get/students/:classId":{
                 get:{
                     tags:["Class"],
+                    summary:"Get the students from a specific class",
+                    security:[{"BearerAuth":[]}],
                     responses:{
                         200:{
                             description:"Success",
@@ -526,7 +561,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "class/search?name=exemplo&type=exemplo":{
+            "class/search?":{
                 get:{
                     tags:["Class"],
                     parameters:[
@@ -578,7 +613,8 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "class/update":{
                 put:{
                     tags:["Class"],
-                    summary:"Update class route",
+                    summary:"Update class route (ADMIN ONLY)",
+                    security:[{"BearerAuth":[]}],
                     requestBody:{
                         content:{
                             "application/json":{
@@ -618,7 +654,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "belt/update":{
                 patch:{
                     tags:["Belt"],
-                    summary:"Update belt route",
+                    summary:"Update belt route (ADMIN ONLY)",
                     description:"Entenda que cada combinação de cor-grau de faixa é uma linha especifica no banco de dados, logo só quem pode edita-las deverá ser o usuário. Ele só pode alterar o 'rq_frequency', isso é, a quantidade de presenças que um aluno tem que ter naquela faixa pra passar pra próxima faixa.'color' é a cor das faixas que serão alteradas.",
                     security:[{"BearerAuth":[]}],
                     requestBody:{
@@ -721,7 +757,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "student/search":{
+            "student/search?":{
                 get:{
                     tags:["Student"],
                     summary:"Route to search students by name",
@@ -784,6 +820,8 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "student/search/gradable":{
                 get:{
                     tags:["Student"],
+                    summary:"Search for the gradale students based on their frequency",
+                    security:[{"BearerAuth":[]}],
                     responses:{
                         200:{
                             description:"Everything went okay",
@@ -808,9 +846,51 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
+            "student/search/birthday":{
+                get:{
+                    tags:["Student"],
+                    summary:"Search for students that had their birthdays on the last 30 days",
+                    security:[{"BearerAuth":[]}],
+                    description:"Search for students that had their birthdays on the last 30 days",
+                    responses:{
+                        200:{
+                            description:"success or none were found",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "result":{
+                                                type:"array",
+                                                items:{
+                                                    properties:{
+                                                        "full_name":{
+                                                            description:"The student full name"
+                                                        },
+                                                        "cpf":{
+                                                            description:"The student cpf"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        404:{
+                            description:"User was not found"
+                        },
+                        500:{
+                            description:"Unpredicted error"
+                        }
+                    }
+                }
+            },
             "student/get/:studentName":{
                 get:{
                     tags:["Student"],
+                    summary:"Get an student by it's name",
+                    security:[{"BearerAuth":[]}],
                     parameters:[
                         {
                             name:"studentName",
@@ -850,6 +930,8 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             "student/delete/:id":{
                 delete:{
                     tags:["Student"],
+                    summary:"Delete an student",
+                    security:[{"BearerAuth":[]}],
                     parameters:[
                         {
                             name:"id",
@@ -865,6 +947,118 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         },
                         404:{
                             description:"student not found",
+                        },
+                        500:{
+                            description:"Unpredicted error"
+                        }
+                    }
+                }
+            },
+            "report/search?":{
+                get:{
+                    tags:["Report"],
+                    summary:"Search for reports route",
+                    security:[{"BearerAuth":[]}],
+                    parameters:[
+                        {
+                            in:"query",
+                            name:"id",
+                            schema:{
+                                type:"string",
+                                description:"Id of the report",
+                                examples:[
+                                    ".anniversary.YYYY-MM-DD.UUUU-UUUU-UUUU-UUUUUUUU",
+                                    ".age.gradable.UUUU-UUUU-UUUU-UUUUUUUU",
+                                    ".blablabla"
+                                ]
+                            },
+                            description:"Id of the report"
+                        },
+                        {
+                            in:"query",
+                            name:"text",
+                            schema:{
+                                type:"string",
+                                description:"Text of the report",
+                                examples:[
+                                    "Aniversário de alunos blablabla",
+                                    "blablabla"
+                                ]
+                            },
+                            description:"Text of the report",
+                        },
+                        {
+                            in:"query",
+                            name:"title",
+                            schema:{
+                                type:"string",
+                                description:"Title of the report",
+                                examples:[
+                                    "Blablablabla",
+                                    "Lorem ipsum dolor amet"
+                                ],
+                            },
+                            description:"Title of the report",
+                        },
+                        {
+                            in:"query",
+                            name:"maxDate",
+                            schema:{
+                                type:"string",
+                                format:"date-time",
+                                description:"Search for reports up to this date",
+                            },
+                            description:"Search for reports up to this date",
+                        },
+                        {
+                            in:"query",
+                            name:"minDate",
+                            schema:{
+                                type:"string",
+                                format:"date-time",
+                                description:"Search for reports after this date"
+                            },
+                            description:"Search for reports after this date"
+                        }
+                    ],
+                    responses:{
+                        200:{
+                            description:"Success or none were found",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:reportObject,
+                                    }
+                                }
+                            }
+                        },
+                        404:{
+                            description:"User was not found"
+                        },
+                        500:{
+                            description:"Unpredicted error"
+                        }
+                    }
+                }
+            },
+            "report/birthday":{
+                get:{
+                    tags:["Report"],
+                    summary:"Search for reports of birthday",
+                    security:[{"BearerAuth":[]}],
+                    responses:{
+                        200:{
+                            description:"Success or none were found",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:reportObject,
+                                    }
+                                }
+                            }
+                        },
+                        404:{
+                            description:"User was not found"
                         },
                         500:{
                             description:"Unpredicted error"

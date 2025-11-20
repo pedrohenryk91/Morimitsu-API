@@ -14,3 +14,8 @@ export type Student = {
     current_fq: number;
     belt_id: string;
 }
+
+export type StudentBasicInfo = {
+    full_name: string,
+    cpf: string
+}

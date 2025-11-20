@@ -1,4 +1,4 @@
-export type Announcements = {
+export type Report = {
     id: string,
     title: string,
     text: string | null,

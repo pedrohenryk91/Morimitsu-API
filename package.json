@@ -6,7 +6,7 @@
   "author": "Pedro Henryk",
   "type": "commonjs",
   "scripts": {
-    "deploy":"tsx src/server.ts",
+    "deploy": "tsx src/server.ts",
     "dev": "tsx --watch src/server.ts",
     "test": "vitest --run"
   },
@@ -25,7 +25,7 @@
     "fastify": "^5.6.1",
     "fastify-type-provider-zod": "^6.0.0",
     "nodemailer": "^7.0.10",
-    "prisma": "^6.17.1",
+    "prisma": "^6.19.0",
     "supabase": "^2.45.5",
     "tsx": "^4.20.5",
     "typescript": "^5.9.3",

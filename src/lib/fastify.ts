@@ -12,6 +12,7 @@ import { beltRouter } from "../http/routers/beltRouter";
 import { classRouter } from "../http/routers/classRouter";
 import { studentRouter } from "../http/routers/studentRouter";
 import { frequencyRouter } from "../http/routers/frequencyRouter";
+import { reportRouter } from "../http/routers/reportRouter";
 
 export const app = fastify();
 
@@ -53,6 +54,10 @@ app.register(beltRouter, {
 app.register(classRouter, {
     prefix:"/class",
 });
+
+app.register(reportRouter, {
+    prefix:"/report"
+})
 
 app.register(studentRouter, {
     prefix:"/student",

@@ -1,5 +1,5 @@
 import { student } from "@prisma/client";
-import { Student } from "../../lib/types/student";
+import { Student, StudentBasicInfo } from "../../lib/types/student";
 import { StudentRepository } from "../StudentRepository";
 import { prisma } from "../../lib/prisma";
 import { searchStudentParams } from "../../lib/interfaces/searchStudentsParams";
@@ -79,7 +79,7 @@ export class PrismaStudentRepository implements StudentRepository {
         });
     }
 
-    async search(data: searchStudentParams): Promise<student[]> {
+    async search(data: searchStudentParams, limit?: number): Promise<student[]> {
         const {fullName,maxAge,minAge,nickname} = data
         return prisma.student.findMany({
             where:{
@@ -92,9 +92,107 @@ export class PrismaStudentRepository implements StudentRepository {
                 age:{
                     gte:minAge,
                     lte:maxAge,
-                }
-            }
+                },
+            },
+            take:limit,
         })
+    }
+
+    async searchByBirthday(nDaysBefore: number): Promise<StudentBasicInfo[]> {
+        const students = await prisma.$queryRaw<StudentBasicInfo[]>`
+        WITH ref AS (
+            SELECT
+                EXTRACT(YEAR FROM CURRENT_DATE)::int AS year_ref,
+                (EXTRACT(YEAR FROM CURRENT_DATE)::int % 4 = 0 AND EXTRACT(YEAR FROM CURRENT_DATE)::int % 100 <> 0)
+                OR (EXTRACT(YEAR FROM CURRENT_DATE)::int % 400 = 0) AS is_leap,
+                (CURRENT_DATE - (${nDaysBefore} * INTERVAL '1 day'))::date AS start_date,
+                CURRENT_DATE::date AS end_date
+            )
+            SELECT s.full_name, s.cpf
+            FROM student s, ref r
+            WHERE (
+            -- dia e mês originais
+            (EXTRACT(MONTH FROM s.birthday))::int IS NOT NULL
+            AND (EXTRACT(DAY FROM s.birthday))::int IS NOT NULL
+            -- ajusta 29/02 para 28 quando o ano atual NÃO for bissexto
+            AND (
+                -- aniversário no ANO ATUAL (ex.: convertendo 25/12 -> 25/12/2025 se year_ref = 2025)
+                make_date(
+                r.year_ref,
+                EXTRACT(MONTH FROM s.birthday)::int,
+                CASE
+                    WHEN EXTRACT(MONTH FROM s.birthday)::int = 2
+                    AND EXTRACT(DAY FROM s.birthday)::int = 29
+                    AND NOT r.is_leap
+                    THEN 28
+                    ELSE EXTRACT(DAY FROM s.birthday)::int
+                END
+                ) BETWEEN r.start_date AND r.end_date
+                -- OU aniversário no ANO ANTERIOR (necessário quando a janela cruza o ano)
+                OR make_date(
+                r.year_ref - 1,
+                EXTRACT(MONTH FROM s.birthday)::int,
+                CASE
+                    WHEN EXTRACT(MONTH FROM s.birthday)::int = 2
+                    AND EXTRACT(DAY FROM s.birthday)::int = 29
+                    AND NOT r.is_leap
+                    THEN 28
+                    ELSE EXTRACT(DAY FROM s.birthday)::int
+                END
+                ) BETWEEN r.start_date AND r.end_date
+            )
+            )`;
+
+        return students;
+    }
+
+    async checkBirthday(nDaysBefore: number): Promise<boolean> {
+    const exists = await prisma.$queryRaw<{ exists: boolean }[]>`
+        WITH ref AS (
+        SELECT
+            EXTRACT(YEAR FROM CURRENT_DATE)::int AS year_ref,
+            (
+            (EXTRACT(YEAR FROM CURRENT_DATE)::int % 4 = 0 AND EXTRACT(YEAR FROM CURRENT_DATE)::int % 100 <> 0)
+            OR (EXTRACT(YEAR FROM CURRENT_DATE)::int % 400 = 0)
+            ) AS is_leap,
+            (CURRENT_DATE - (${nDaysBefore} * INTERVAL '1 day'))::date AS start_date,
+            CURRENT_DATE::date AS end_date
+        )
+        SELECT EXISTS (
+        SELECT 1
+        FROM student s, ref r
+        WHERE (
+            -- aniversário no ANO ATUAL
+            make_date(
+            r.year_ref,
+            EXTRACT(MONTH FROM s.birthday)::int,
+            CASE
+                WHEN EXTRACT(MONTH FROM s.birthday)::int = 2
+                AND EXTRACT(DAY FROM s.birthday)::int = 29
+                AND NOT r.is_leap
+                THEN 28
+                ELSE EXTRACT(DAY FROM s.birthday)::int
+            END
+            ) BETWEEN r.start_date AND r.end_date
+
+            OR
+
+            -- aniversário NO ANO ANTERIOR (para cruzar o ano novo)
+            make_date(
+            r.year_ref - 1,
+            EXTRACT(MONTH FROM s.birthday)::int,
+            CASE
+                WHEN EXTRACT(MONTH FROM s.birthday)::int = 2
+                AND EXTRACT(DAY FROM s.birthday)::int = 29
+                AND NOT r.is_leap
+                THEN 28
+                ELSE EXTRACT(DAY FROM s.birthday)::int
+            END
+            ) BETWEEN r.start_date AND r.end_date
+        )
+        ) AS exists;
+    `;
+        return exists[0].exists;
     }
 
     async countByFrequency(): Promise<EligibleStudent[]> {

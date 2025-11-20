@@ -5,6 +5,7 @@ import { getStudentData } from "../controllers/student/getStudentData";
 import { searchStudentsController } from "../controllers/student/searchStudentController";
 import { deleteStudentController } from "../controllers/student/deleteStudentController";
 import { eligibleStudentsSearchController } from "../controllers/student/eligibleStudentsSearchController";
+import { getBirthdayStudentsController } from "../controllers/student/getBirthdayStudentsController";
 
 export async function studentRouter(app: FastifyInstance) {
     app.route({
@@ -30,6 +31,12 @@ export async function studentRouter(app: FastifyInstance) {
         method:["GET"],
         preHandler:verifyAuthToken,
         handler:eligibleStudentsSearchController,
+    })
+    app.route({
+        url:"/search/birthday",
+        method:["GET"],
+        preHandler:verifyAuthToken,
+        handler:getBirthdayStudentsController,
     })
     app.route({
         url:"/delete/:id",

@@ -45,11 +45,12 @@ enum colors {
   red
 }
 
-model announcement {
+model report {
   id String @id
   title String
   text String?
   date DateTime?
+  to roles
 }
 
 model user {
