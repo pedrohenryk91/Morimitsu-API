@@ -23,6 +23,7 @@ export async function LoginController(request: FastifyRequest, reply: FastifyRep
         reply.status(201).send({
             description:"User logged successfully.",
             token:result.token,
+            role:result.role,
         });
     }
     catch (err) {

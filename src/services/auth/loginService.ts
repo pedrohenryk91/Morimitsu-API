@@ -32,7 +32,8 @@ export class LoginService {
         });
 
         return {
-            token
+            token,
+            role:doesUserExists.role,
         }
     }
 }
