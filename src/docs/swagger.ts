@@ -147,6 +147,11 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             description:"API for Morimitsu Jiu-Jitsu Tradition System",
             version:"0.0.1",
         },
+        servers:[{
+            url:"https://morimitsu-api.onrender.com/"
+        },{
+            url:"http://localhost:4786/"
+        }],
         components:{
             securitySchemes:{
                 "BearerAuth":{
@@ -157,7 +162,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             }
         },
         paths:{
-            "auth/login":{
+            "/auth/login":{
                 post:{
                     tags:["Auth"],
                     summary:"Login",
@@ -195,7 +200,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "user/create":{
+            "/user/create":{
                 post:{
                     tags:["User"],
                     summary:"Route to create an user (ADMIN ONLY)",
@@ -246,7 +251,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "user/create/from/student":{
+            "/user/create/from/student":{
                 post:{
                     tags:["User"],
                     summary:"Route to create an user from a student (ADMIN ONLY)",
@@ -287,7 +292,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "user/update":{
+            "/user/update":{
                 put:{
                     tags:["User"],
                     summary:"Update user",
@@ -344,7 +349,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "user/get":{
+            "/user/get":{
                 get:{
                     tags:["User"],
                     summary:"Get the user info",
@@ -379,7 +384,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "user/delete/:id":{
+            "/user/delete/:id":{
                 delete:{
                     tags:["User"],
                     summary:"Delete a user (ADMIN ONLY)",
@@ -406,7 +411,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "class/create":{
+            "/class/create":{
                 post:{
                     tags:["Class"],
                     summary:"Create an new class (ADMIN ONLY)",
@@ -457,7 +462,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "class/add/students":{
+            "/class/add/students":{
                 put:{
                     tags:["Class"],
                     summary:"Add students to a class",
@@ -496,7 +501,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "class/get/students/:classId":{
+            "/class/get/students/:classId":{
                 get:{
                     tags:["Class"],
                     summary:"Get the students from a specific class",
@@ -561,7 +566,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "class/search?":{
+            "/class/search?":{
                 get:{
                     tags:["Class"],
                     parameters:[
@@ -610,7 +615,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "class/update":{
+            "/class/update":{
                 put:{
                     tags:["Class"],
                     summary:"Update class route (ADMIN ONLY)",
@@ -651,7 +656,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "belt/update":{
+            "/belt/update":{
                 patch:{
                     tags:["Belt"],
                     summary:"Update belt route (ADMIN ONLY)",
@@ -686,7 +691,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "frequency/add":{
+            "/frequency/add":{
                 put:{
                     tags:["Frequency"],
                     summary:"Route to add many frequencies",
@@ -729,7 +734,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "student/create":{
+            "/student/create":{
                 post:{
                     tags:["Student"],
                     summary:"Route to create an student",
@@ -757,7 +762,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "student/search?":{
+            "/student/search?":{
                 get:{
                     tags:["Student"],
                     summary:"Route to search students by name",
@@ -817,7 +822,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "student/search/gradable":{
+            "/student/search/gradable":{
                 get:{
                     tags:["Student"],
                     summary:"Search for the gradale students based on their frequency",
@@ -846,7 +851,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "student/search/birthday":{
+            "/student/search/birthday":{
                 get:{
                     tags:["Student"],
                     summary:"Search for students that had their birthdays on the last 30 days",
@@ -886,7 +891,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "student/get/:studentName":{
+            "/student/get/:studentName":{
                 get:{
                     tags:["Student"],
                     summary:"Get an student by it's name",
@@ -927,7 +932,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "student/delete/:id":{
+            "/student/delete/:id":{
                 delete:{
                     tags:["Student"],
                     summary:"Delete an student",
@@ -954,7 +959,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "report/search?":{
+            "/report/search?":{
                 get:{
                     tags:["Report"],
                     summary:"Search for reports route",
@@ -1041,7 +1046,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "report/birthday":{
+            "/report/birthday":{
                 get:{
                     tags:["Report"],
                     summary:"Search for reports of birthday",
