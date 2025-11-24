@@ -108,7 +108,7 @@ export class PrismaStudentRepository implements StudentRepository {
                 (CURRENT_DATE - (${nDaysBefore} * INTERVAL '1 day'))::date AS start_date,
                 CURRENT_DATE::date AS end_date
             )
-            SELECT s.full_name, s.cpf
+            SELECT s.full_name, s.cpf, s.birthday
             FROM student s, ref r
             WHERE (
             -- dia e mês originais

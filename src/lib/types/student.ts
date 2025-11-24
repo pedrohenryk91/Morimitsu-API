@@ -17,5 +17,6 @@ export type Student = {
 
 export type StudentBasicInfo = {
     full_name: string,
+    birthday: Date,
     cpf: string
 }
