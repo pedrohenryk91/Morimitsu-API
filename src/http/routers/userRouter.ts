@@ -15,7 +15,7 @@ export async function userRouter(app: FastifyInstance){
         handler:CreateUserController,
     });
     app.route({
-        url:"/create/from/student",
+        url:"/createFromStudent",
         method:["POST"],
         preHandler:verifyAdminAuthToken,
         handler:createUserFromStudentController,

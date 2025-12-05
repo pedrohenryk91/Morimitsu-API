@@ -200,6 +200,35 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
+            "/auth/requestRecovery":{
+                post:{
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:{
+                                        "email":{
+                                            description:"The email that the recovery email will be sent to."
+                                        },
+                                    },
+                                    required:["email"],
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        201:{
+                            description:"Recovery email sent to the user."
+                        },
+                        404:{
+                            description:"Email was not found;"
+                        },
+                        500:{
+                            description:"Internal Server Error."
+                        }
+                    }
+                }
+            },
             "/user/create":{
                 post:{
                     tags:["User"],
@@ -251,7 +280,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "/user/create/from/student":{
+            "/user/createFromStudent":{
                 post:{
                     tags:["User"],
                     summary:"Route to create an user from a student (ADMIN ONLY)",
