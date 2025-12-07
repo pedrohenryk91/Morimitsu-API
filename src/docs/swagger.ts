@@ -187,6 +187,22 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     responses:{
                         201:{
                             description:"User logged successfully",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "token":{
+                                                description:"The auth token"
+                                            },
+                                            "role":{
+                                                description:"The role of the user",
+                                                enum:["admin","instructor"],
+                                                examples:["admin","instructor"]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
                         400:{
                             description:"Incorrect password",
