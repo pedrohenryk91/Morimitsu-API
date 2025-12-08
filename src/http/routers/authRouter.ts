@@ -17,7 +17,7 @@ export async function authRouter(app: FastifyInstance) {
     })
     app.route({
         url:"/recoverPassword",
-        method:["POST"],
+        method:["PUT"],
         preHandler:[verifyRecoveryToken],
         handler:recoverPasswordController,
     })

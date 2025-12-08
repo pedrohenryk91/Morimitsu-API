@@ -210,6 +210,9 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         404:{
                             description:"User was not found"
                         },
+                        422:{
+                            description:"ZodError, invalid parameters were passed"
+                        },
                         500:{
                             description:"Unknown error"
                         }
@@ -218,6 +221,9 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
             },
             "/auth/requestRecovery":{
                 post:{
+                    tags:["Auth"],
+                    summary:"Request a Password Recovery",
+                    description:"Route to request a password recovery (sends an email)",
                     requestBody:{
                         content:{
                             "application/json":{
@@ -241,6 +247,45 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         },
                         500:{
                             description:"Internal Server Error."
+                        }
+                    }
+                }
+            },
+            "/auth/recoverPassword":{
+                put:{
+                    tags:["Auth"],
+                    summary:"Recover user's password",
+                    security:[{"BearerAuth":[]}],
+                    description:"Recover the user password by changing it. Requires an special token that it's sent by the '/auth/requestRecovery' route.'",
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:{
+                                        "email":{
+                                            description:"The user's email"
+                                        },
+                                        "newPassword":{
+                                            description:"User's new password"
+                                        }
+                                    },
+                                    required:["email","newPassword"],
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        403:{
+                            description:"Special auth token was not provided."
+                        },
+                        404:{
+                            description:"User was not found"
+                        },
+                        422:{
+                            description:"ZodError, invalid parameters were passed"
+                        },
+                        500:{
+                            description:"Unknown error"
                         }
                     }
                 }

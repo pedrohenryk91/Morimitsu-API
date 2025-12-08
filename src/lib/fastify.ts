@@ -13,6 +13,9 @@ import { classRouter } from "../http/routers/classRouter";
 import { studentRouter } from "../http/routers/studentRouter";
 import { frequencyRouter } from "../http/routers/frequencyRouter";
 import { reportRouter } from "../http/routers/reportRouter";
+import z, { ZodError } from "zod";
+import { EntityNotFoundError } from "../errors/entityNotFoundError";
+import { IncorrectPasswordError } from "../errors/passwordIncorrectError";
 
 export const app = fastify();
 
@@ -68,6 +71,21 @@ app.register(frequencyRouter, {
 })
 
 app.setErrorHandler((error, request, reply) => {
+    if(error instanceof IncorrectPasswordError){
+        reply.status(400).send({
+            error: error.message,
+        });
+    }
+    if(error instanceof EntityNotFoundError){
+        reply.status(404).send({
+            error: error.message,
+        })
+    }
+    if(error instanceof ZodError){
+        reply.status(422).send({
+            error: z.treeifyError(error),
+        })
+    }
     reply.status(error.statusCode || 500).send({
         error: error.message
     })
