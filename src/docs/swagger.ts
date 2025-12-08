@@ -275,6 +275,25 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         }
                     },
                     responses:{
+                        201:{
+                            description:"Password Changed.",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "token":{
+                                                description:"The auth token"
+                                            },
+                                            "role":{
+                                                description:"The role of the user",
+                                                enum:["admin","instructor"],
+                                                examples:["admin","instructor"]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
                         403:{
                             description:"Special auth token was not provided."
                         },
