@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer"
-import { EMAIL_ADDRESS, EMAIL_PASSWORD } from "../lib/env"
+import { EMAIL_ADDRESS, EMAIL_PASSWORD, NODE_ENV } from "../lib/env"
 import { Email } from "../lib/interfaces/email"
 
 const transporter = nodemailer.createTransport({
@@ -16,6 +16,9 @@ const transporter = nodemailer.createTransport({
 })
 
 export async function sendEmail(email: Email) {
+    if(NODE_ENV !== "deploy"){
+        return;
+    }
     return transporter.sendMail({
         from:`App Auth <No-Reply>`,
         to: email.to,
