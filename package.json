@@ -7,8 +7,8 @@
   "type": "commonjs",
   "scripts": {
     "build": "npx tsc",
-    "deploy": "node dist/server.js",
-    "dev": "tsx --watch src/server.ts",
+    "start": "node dist/server.js",
+    "dev": "tsx --watch src/dev.ts",
     "test": "vitest --run"
   },
   "dependencies": {
