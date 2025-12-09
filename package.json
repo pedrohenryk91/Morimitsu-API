@@ -6,7 +6,7 @@
   "author": "Pedro Henryk",
   "type": "commonjs",
   "scripts": {
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "start": "node dist/server.js",
     "dev": "tsx --watch src/server.ts",
     "test": "vitest --run"
