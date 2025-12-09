@@ -16,6 +16,7 @@ import { reportRouter } from "../http/routers/reportRouter";
 import z, { ZodError } from "zod";
 import { EntityNotFoundError } from "../errors/entityNotFoundError";
 import { IncorrectPasswordError } from "../errors/passwordIncorrectError";
+import { homeRouter } from "../http/routers/homeRouter";
 
 export const app = fastify();
 
@@ -41,6 +42,8 @@ app.register(fastifySwagger, SwaggerDocumentationOptions);
 app.register(fastifySwaggerUi, {
     routePrefix:"/docs",
 });
+
+app.register(homeRouter)
 
 app.register(authRouter, {
     prefix:"/auth"

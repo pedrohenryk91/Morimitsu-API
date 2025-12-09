@@ -4,11 +4,14 @@ import { UserAlreadyExistsError } from "../../../errors/userAlreadyExistsError";
 import { EmailAlreadyInUseError } from "../../../errors/emailAlreadyInUseError";
 import { PrismaUserRepository } from "../../../repositories/prisma/PrismaUserRepository";
 import { CreateUserService } from "../../../services/user/createUserService";
+import { isCpfValid } from "../../../utils/isCpfValid";
 
 export async function CreateUserController(request: FastifyRequest, reply: FastifyReply) {
     try {
         const {cpf,email,name,password,belt_id,phoneNumber} = z.object({
-            cpf: z.string(),
+            cpf: z.string().refine(data => isCpfValid(data), {
+                error: "InvalidCpf"
+            }),
             name: z.string(),
             email: z.email(),
             belt_id: z.string(),

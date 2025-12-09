@@ -6,8 +6,9 @@
   "author": "Pedro Henryk",
   "type": "commonjs",
   "scripts": {
-    "deploy": "tsx src/server.ts",
-    "dev": "tsx --watch src/server.ts",
+    "build": "npx tsc",
+    "deploy": "node dist/server.js",
+    "dev": "tsx --watch src/dev.ts",
     "test": "vitest --run"
   },
   "dependencies": {

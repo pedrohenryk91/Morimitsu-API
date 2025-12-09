@@ -3,11 +3,14 @@ import z from "zod";
 import { CreateStudentService } from "../../../services/student/createStudentService";
 import { PrismaStudentRepository } from "../../../repositories/prisma/PrismaStudentRepository";
 import { CpfAlreadyRegistered } from "../../../errors/cpfAlreadyRegistered";
+import { isCpfValid } from "../../../utils/isCpfValid";
 
 export async function registerStudentController(request: FastifyRequest, reply: FastifyReply) {
 try {
     const {cpf, gender, nickname, currentFq, fullName, guardianName, phoneNumber, guardianNumber, birthday, beltId} = z.object({
-        cpf: z.string(),
+        cpf: z.string().refine(data => isCpfValid(data), {
+            error: "InvalidCpf"
+        }),
         gender: z.enum(["man","woman"]),
         nickname: z.string(),
         currentFq: z.coerce.number(),
