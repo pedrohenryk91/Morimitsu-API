@@ -84,30 +84,35 @@ export class PrismaStudentRepository implements StudentRepository {
         if(Object.values(data).every(v => v === undefined) && !limit){
             limit = 20;
         }
+        const where: any = {};
+        if (guardianName) {
+            where.guardian_name = { contains: guardianName, mode: "insensitive" };
+        }
+
+        if (phoneNumber) {
+            where.phone_number = { contains: phoneNumber };
+        }
+
+        if (fullName) {
+            where.full_name = { contains: fullName, mode: "insensitive" };
+        }
+
+        if (nickname) {
+            where.nickname = { contains: nickname, mode: "insensitive" };
+        }
+
+        if (minAge || maxAge) {
+            where.age = { gte: minAge, lte: maxAge };
+        }
+
+        if (beltId) where.belt_id = beltId;
+        if (gender) where.gender = gender; // enum opcional
+        if (cpf) where.cpf = cpf;
+
         return prisma.student.findMany({
-            where:{
-                guardian_name:{
-                    contains:guardianName,
-                },
-                phone_number:{
-                    contains:phoneNumber
-                },
-                full_name:(fullName?{
-                    contains:fullName
-                }:undefined),
-                nickname:(nickname?{
-                    contains:nickname
-                }:undefined),
-                age:(minAge||maxAge?{
-                    gte:minAge,
-                    lte:maxAge,
-                }:undefined),
-                belt_id:beltId,
-                gender,
-                cpf,
-            },
+            where,
             take:limit,
-        });
+        })
     }
 
     async searchByBirthday(nDaysBefore: number): Promise<StudentBasicInfo[]> {

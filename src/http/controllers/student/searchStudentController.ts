@@ -6,19 +6,47 @@ import { isCpfValid } from "../../../utils/isCpfValid";
 
 export async function searchStudentsController(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const {fullName,maxAge,minAge,nickname,beltId,gender,guardianName,phoneNumber,cpf} = z.object({
-            fullName: z.string().optional(),
-            nickname: z.string().optional(),
-            minAge: z.coerce.number().optional(),
-            maxAge: z.coerce.number().optional(),
-            beltId: z.string().optional(),
-            gender: z.enum(["man","woman"]).optional(),
-            guardianName: z.string().optional(),
-            phoneNumber: z.string().optional(),
-            cpf: z.string().refine(data => isCpfValid(data), {
-                error: "InvalidCpf"
-            }).optional(),
-        }).parse(request.query);
+        const qsString = () =>
+            z.union([z.string(), z.array(z.string())])
+            .transform((v) => {
+            const value = Array.isArray(v) ? v[0] : v; 
+            return value === "" ? undefined : value;
+            })
+            .optional();
+
+
+        const qsNumber = () =>
+            z.union([z.string(), z.array(z.string())])
+            .transform((v) => {
+            const value = Array.isArray(v) ? v[0] : v;
+
+            if (value === "") return undefined;
+
+            const num = Number(value);
+            return Number.isNaN(num) ? undefined : num;
+            })
+            .optional();
+
+        const schema = z.object({
+            fullName: qsString(),
+            nickname: qsString(),
+            minAge: qsNumber(),
+            maxAge: qsNumber(),
+            beltId: qsString(),
+            gender: z.preprocess(
+                (v) => (v === "" ? undefined : v),
+                z.enum(["man", "woman"]).optional()
+            ),
+            guardianName: qsString(),
+            phoneNumber: qsString(),
+            cpf: qsString().refine(
+                (data) => (data ? isCpfValid(data) : true),
+                "InvalidCpf"
+            ),
+        });
+
+
+        const {beltId,cpf,fullName,gender,guardianName,maxAge,minAge,nickname,phoneNumber} = schema.parse(request.query);
 
         const studentRepo = new PrismaStudentRepository();
         const service = new SearchStudentsService(studentRepo);
