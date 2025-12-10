@@ -30,10 +30,6 @@ const studentObject: any = {
     cpf:{
         description:"Student cpf",
     },
-    age:{
-        type:"number",
-        description:"Student age"
-    },
     gender:{
         enum:[
             "man",
@@ -1037,6 +1033,49 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         },
                         500:{
                             description:"Unpredicted error"
+                        }
+                    }
+                }
+            },
+            "/student/update/:studentId":{
+                put:{
+                    tags:["Student"],
+                    summary:"Get an student by it's name",
+                    security:[{"studentId":[]}],
+                    parameters:[
+                        {
+                            name:"studentName",
+                            in:"path",
+                            schema:{
+                                type:"string",
+                            }
+                        }
+                    ],
+                    requestBody:{
+                        content:{
+                            "application/json":{
+                                schema:{
+                                    properties:studentObject,
+                                }
+                            }
+                        }
+                    },
+                    responses:{
+                        201:{
+                            description:"Student updated.",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:studentObject,
+                                    }
+                                }
+                            }
+                        },
+                        404:{
+                            description:"Student not found."
+                        },
+                        409:{
+                            description:"Cpf already in use."
                         }
                     }
                 }

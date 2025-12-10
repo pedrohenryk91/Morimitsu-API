@@ -75,7 +75,7 @@ model student {
   gender gender
   nickname String
   full_name String
-  guardian_name String @unique
+  guardian_name String
   phone_number String?
   guardian_number String?
   birthday DateTime

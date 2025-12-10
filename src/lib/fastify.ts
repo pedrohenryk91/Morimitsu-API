@@ -17,6 +17,9 @@ import z, { ZodError } from "zod";
 import { EntityNotFoundError } from "../errors/entityNotFoundError";
 import { IncorrectPasswordError } from "../errors/passwordIncorrectError";
 import { homeRouter } from "../http/routers/homeRouter";
+import { UserAlreadyExistsError } from "../errors/userAlreadyExistsError";
+import { EmailAlreadyInUseError } from "../errors/emailAlreadyInUseError";
+import { CpfAlreadyRegistered } from "../errors/cpfAlreadyRegistered";
 
 export const app = fastify();
 
@@ -82,6 +85,13 @@ app.setErrorHandler((error, request, reply) => {
     if(error instanceof EntityNotFoundError){
         reply.status(404).send({
             error: error.message,
+        })
+    }
+    if(error instanceof UserAlreadyExistsError ||
+       error instanceof EmailAlreadyInUseError ||
+       error instanceof CpfAlreadyRegistered){
+        reply.status(409).send({
+            error:error.message,
         })
     }
     if(error instanceof ZodError){
