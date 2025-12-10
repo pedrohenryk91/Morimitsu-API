@@ -904,6 +904,49 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                             schema:{
                                 type:"number"
                             }
+                       },
+                       {
+                            in:"query",
+                            name:"gender",
+                            description:"Student gender",
+                            schema:{
+                                enum:[
+                                    "man",
+                                    "woman"
+                                ]
+                            }
+                       },
+                       {
+                            in:"query",
+                            name:"phoneNumber",
+                            description:"Student's phone number",
+                            schema:{
+                                type:"string"
+                            }
+                       },
+                       {
+                            in:"query",
+                            name:"guardianName",
+                            description:"Student's guardian name",
+                            schema:{
+                                type:"string"
+                            }
+                       },
+                       {
+                            in:"query",
+                            name:"beltId",
+                            description:"Student's belt's id",
+                            schema:{
+                                type:"string"
+                            }
+                       },
+                       {
+                            in:"query",
+                            name:"cpf",
+                            description:"Student's cpf",
+                            schema:{
+                                type:"string"
+                            }
                        }
                     ],
                     responses:{
@@ -996,7 +1039,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
-            "/student/get/:studentName":{
+            /*"/student/get/:studentName":{
                 get:{
                     tags:["Student"],
                     summary:"Get an student by it's name",
@@ -1036,7 +1079,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         }
                     }
                 }
-            },
+            },*/
             "/student/update/:studentId":{
                 put:{
                     tags:["Student"],

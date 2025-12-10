@@ -7,13 +7,23 @@ export class SearchStudentsService {
         fullName,
         maxAge,
         minAge,
-        nickname
+        nickname,
+        beltId,
+        cpf,
+        gender,
+        guardianName,
+        phoneNumber,
     }: searchStudentParams){
         const students = await this.studentRepo.search({
             fullName,
             maxAge,
             minAge,
             nickname,
+            beltId,
+            cpf,
+            gender,
+            guardianName,
+            phoneNumber,
         });
 
         return students;

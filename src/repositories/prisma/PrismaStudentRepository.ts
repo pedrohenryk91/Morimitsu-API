@@ -80,10 +80,18 @@ export class PrismaStudentRepository implements StudentRepository {
     }
 
     async search(data: searchStudentParams, limit?: number): Promise<student[]> {
-        
-        const {fullName,maxAge,minAge,nickname} = data
+        const {fullName,maxAge,minAge,nickname,beltId,cpf,gender,guardianName,phoneNumber} = data
+        if(Object.values(data).every(v => v === undefined) && !limit){
+            limit = 20;
+        }
         return prisma.student.findMany({
             where:{
+                guardian_name:{
+                    contains:guardianName,
+                },
+                phone_number:{
+                    contains:phoneNumber
+                },
                 full_name:(fullName?{
                     contains:fullName
                 }:undefined),
@@ -94,9 +102,12 @@ export class PrismaStudentRepository implements StudentRepository {
                     gte:minAge,
                     lte:maxAge,
                 }:undefined),
+                belt_id:beltId,
+                gender,
+                cpf,
             },
             take:limit,
-        })
+        });
     }
 
     async searchByBirthday(nDaysBefore: number): Promise<StudentBasicInfo[]> {
