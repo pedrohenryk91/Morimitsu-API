@@ -80,19 +80,20 @@ export class PrismaStudentRepository implements StudentRepository {
     }
 
     async search(data: searchStudentParams, limit?: number): Promise<student[]> {
+        
         const {fullName,maxAge,minAge,nickname} = data
         return prisma.student.findMany({
             where:{
-                full_name:{
+                full_name:(fullName?{
                     contains:fullName
-                },
-                nickname:{
+                }:undefined),
+                nickname:(nickname?{
                     contains:nickname
-                },
-                age:{
+                }:undefined),
+                age:(minAge||maxAge?{
                     gte:minAge,
                     lte:maxAge,
-                },
+                }:undefined),
             },
             take:limit,
         })
