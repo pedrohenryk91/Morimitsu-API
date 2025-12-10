@@ -329,7 +329,6 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                         },
                                         "belt_id":{
                                             description:"O id da faixa do usuario",
-                                            type:"integer",
                                         },
                                         "phoneNumber":{
                                             description:"The user phone number, this is optional"
