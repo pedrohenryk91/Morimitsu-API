@@ -11,9 +11,11 @@ export async function requestRecoveryController(request: FastifyRequest, reply: 
     const userRepo = new PrismaUserRepository();
     const service = new RequestRecoveryService(userRepo);
 
-    await service.execute(email);
+    const { hashCode, recovToken } = await service.execute(email);
 
     reply.status(201).send({
-        description:"Email sent."
+        description:"Email sent.",
+        hashCode,
+        recovToken,
     })
 }

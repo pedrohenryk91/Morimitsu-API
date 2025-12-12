@@ -236,7 +236,21 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     },
                     responses:{
                         201:{
-                            description:"Recovery email sent to the user."
+                            description:"Recovery email sent to the user.",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "hashCode":{
+                                                description:"Hash code for user recovery validation."
+                                            },
+                                            "recovToken":{
+                                                description:"Token that must be passed on the /auth/recoverPassword route Authorization."
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         },
                         404:{
                             description:"Email was not found;"
