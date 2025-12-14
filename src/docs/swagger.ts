@@ -275,11 +275,8 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                         "email":{
                                             description:"The user's email"
                                         },
-                                        "newPassword":{
-                                            description:"User's new password"
-                                        }
                                     },
-                                    required:["email","newPassword"],
+                                    required:["email"],
                                 }
                             }
                         }

@@ -7,9 +7,8 @@ import { EntityNotFoundError } from "../../../errors/entityNotFoundError";
 
 export async function recoverPasswordController(request: FastifyRequest, reply: FastifyReply){
     try {
-        const {newPassword,email} = z.object({
-            email: z.email(),
-            newPassword: z.string().min(6),
+        const {email} = z.object({
+            email: z.email()
         }).parse(request.body);
 
         const userRepo = new PrismaUserRepository();
@@ -17,7 +16,6 @@ export async function recoverPasswordController(request: FastifyRequest, reply: 
 
         const {role,token} = await service.execute({
             email,
-            newPassword,
         })
 
         reply.status(201).send({
