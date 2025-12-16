@@ -1,3 +1,4 @@
+import { hash } from "bcryptjs";
 import { CpfAlreadyRegistered } from "../../errors/cpfAlreadyRegistered";
 import { EmailAlreadyInUseError } from "../../errors/emailAlreadyInUseError";
 import { EntityNotFoundError } from "../../errors/entityNotFoundError";
@@ -55,11 +56,12 @@ export class CreateUserFromStudentService {
 
 
         const {belt_id,cpf,nickname,phone_number} = doesStudentExists
+        const hashPassword = await hash(password, 11);
         await this.userRepo.create({
             belt_id,
             cpf,
             email,
-            password,
+            password:hashPassword,
             phone_number,
             name:nickname,
             role:"instructor"
