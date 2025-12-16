@@ -6,3 +6,12 @@ export type User = {
     password: string,
     phoneNumber: string | null,
 }
+
+export type InstructorShownData = {
+    instructorId: string,
+    instructorName: string,
+    classes:{
+        name: string,
+        id: string,
+    }[]
+}

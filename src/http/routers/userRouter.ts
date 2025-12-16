@@ -6,6 +6,7 @@ import { UpdateUserController } from "../controllers/user/updateUserController";
 import { verifyAdminAuthToken } from "../middlewares/verifyAdminAuthToken";
 import { createUserFromStudentController } from "../controllers/user/createUserFromStudentController";
 import { deleteUserController } from "../controllers/user/deleteUserController";
+import { getInstructorsDataController } from "../controllers/user/getInstructorsDataController";
 
 export async function userRouter(app: FastifyInstance){
     app.route({
@@ -25,6 +26,12 @@ export async function userRouter(app: FastifyInstance){
         method:["GET"],
         preHandler:verifyAuthToken,
         handler:getUserInfoController,
+    })
+    app.route({
+        url:"/get/instructors",
+        method:["GET"],
+        preHandler:verifyAdminAuthToken,
+        handler:getInstructorsDataController,
     })
     app.route({
         url:"/update",

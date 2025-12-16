@@ -1,7 +1,7 @@
-import { Prisma, user } from "@prisma/client";
+import { user } from "@prisma/client";
 import { prisma } from "../../lib/prisma";
 import { UserRepository } from "../UserRepository";
-import { randomUUID } from "crypto";
+import { InstructorShownData } from "../../lib/types/user";
 
 export class PrismaUserRepository implements UserRepository {
     async create(data: user): Promise<user> {
@@ -25,12 +25,18 @@ export class PrismaUserRepository implements UserRepository {
     }
 
     async findById(id: string): Promise<user | null> {
-        const user = await prisma.user.findUnique({
+        return await prisma.user.findUnique({
             where:{
                 id,
+            },
+            include:{
+                classes:{
+                    where:{
+                        instructor_id:id,
+                    }
+                }
             }
-        })
-        return user
+        });
     }
 
     async findByCpf(cpf: string): Promise<user | null> {
@@ -52,6 +58,33 @@ export class PrismaUserRepository implements UserRepository {
             }
         })
         return user
+    }
+
+    async getInstructorsShownData(take?: number): Promise<InstructorShownData[]> {
+        const dataRaw = await prisma.user.findMany({
+            where:{
+                role:"instructor",
+            },
+            select:{
+                id:true,
+                name:true,
+                classes:{
+                    select:{
+                        id:true,
+                        name:true,
+                    }
+                }
+            },
+            take,
+        })
+        const dataParsed: InstructorShownData[] = dataRaw.map(data => {
+            return {
+                instructorName:data.name,
+                instructorId:data.id,
+                classes:data.classes,
+            }
+        })
+        return dataParsed;
     }
 
     async update(id: string, data: Partial<user>): Promise<user | null> {

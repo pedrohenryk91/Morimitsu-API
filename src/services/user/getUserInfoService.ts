@@ -10,8 +10,10 @@ export class GetUserInfoService {
         }
 
         const user = {
+            id:doesUserExsists.id,
             cpf:doesUserExsists.cpf,
             name:doesUserExsists.name,
+            beltId:doesUserExsists.belt_id,
             phoneNumber:doesUserExsists.phone_number,
         }
 

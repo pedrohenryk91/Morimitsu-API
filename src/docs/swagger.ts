@@ -476,14 +476,20 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                 "application/json":{
                                     schema:{
                                         properties:{
-                                            "cpf":{
-
+                                            id:{
+                                                description:"The id of the user"
                                             },
-                                            "name":{
-
+                                            cpf:{
+                                                description:"The cpf of the user"
                                             },
-                                            "phoneNumber":{
-
+                                            name:{
+                                                description:"The name of the user"
+                                            },
+                                            beltId:{
+                                                description:"The id of the belt of the user"
+                                            },
+                                            phoneNumber:{
+                                                description:"The user's phone number"
                                             }
                                         }
                                     }
@@ -495,6 +501,64 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                         },
                         500:{
                             description:"Unknown error"
+                        }
+                    }
+                }
+            },
+            "/user/get/instructors":{
+                get:{
+                    tags:["User"],
+                    summary:"Get the data of the instructors (ADMIN ONLY)",
+                    security:[{"BearerAuth":[]}],
+                    description:"Get the data of the instructors (ADMIN ONLY)",
+                    parameters:[{
+                        in:"query",
+                        name:"take",
+                        schema:{
+                            type:"number",
+                            nullable:true,
+                            example:20,
+                            description:"This is optional!",
+                            title:"This is optional!",
+                        }
+                    }],
+                    responses:{
+                        200:{
+                            description:"success",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            "data":{
+                                                type:"array",
+                                                items:{
+                                                    properties:{
+                                                        "instructorName":{
+                                                            description:"The name of the instructor"
+                                                        },
+                                                        "instructorId":{
+                                                            description:"The id of the instructor"
+                                                        },
+                                                        "classes":{
+                                                            type:"array",
+                                                            items:{
+                                                                properties:{
+                                                                    "name":{
+                                                                        description:"Name of the class"
+                                                                    },
+                                                                    "id":{
+                                                                        description:"Id of the class"
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
