@@ -5,7 +5,7 @@ import { UserRepository } from "../../repositories/UserRepository";
 
 interface createClassParams {
     name: string,
-    instructor_id: string,
+    instructor_id?: string,
     type: ClassTypes,
     rq_fq?: number,
 }
@@ -18,9 +18,11 @@ export class CreateClassService {
         type,
         rq_fq,
     }: createClassParams){
-        const doesUserExists = await this.userRepo.findById(instructor_id);
-        if(!doesUserExists){
-            throw new EntityNotFoundError("Instructor");
+        if(instructor_id){
+            const doesUserExists = await this.userRepo.findById(instructor_id);
+            if(!doesUserExists){
+                throw new EntityNotFoundError("Instructor");
+            }
         }
 
         this.classRepo.create({

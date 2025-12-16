@@ -25,6 +25,7 @@ export class PrismaClassRepository implements ClassRepository {
                     contains:data.name
                 },
                 type:data.type,
+                instructor_id:data.instructorId,
             }
         })
     }

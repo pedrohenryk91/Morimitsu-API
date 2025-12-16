@@ -6,9 +6,10 @@ import { EntityNotFoundError } from "../../../errors/entityNotFoundError";
 
 export async function searchClassesController(request: FastifyRequest, reply: FastifyReply) {
     try {
-        const {name,type} = z.object({
+        const {name,type,instructorId} = z.object({
             name: z.string().optional(),
-            type: z.enum(["kids","normal","mista"]).optional()
+            type: z.enum(["kids","normal","mista"]).optional(),
+            instructorId: z.string().optional()
         }).parse(request.query);
 
         const classRepo = new PrismaClassRepository();
@@ -17,6 +18,7 @@ export async function searchClassesController(request: FastifyRequest, reply: Fa
         const result = await service.execute({
             name,
             type,
+            instructorId,
         });
 
         reply.status(200).send({

@@ -113,11 +113,11 @@ model frequency {
 model classes {
   id String @id @default(uuid())
   name String @unique
-  instructor_id String
+  instructor_id String?
   type classtype @default(mista)
   rq_fq Int? //Required Frequency
 
-  user user @relation(references: [id], fields: [instructor_id])
+  user user? @relation(references: [id], fields: [instructor_id])
   students student[]
   frequency frequency[]
 }
