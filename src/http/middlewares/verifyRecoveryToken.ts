@@ -6,8 +6,8 @@ export async function verifyRecoveryToken(request: FastifyRequest) {
 
     const result = z.object({
         sub: z.object({
-            def: z.literal("RecovPass;)")
-        }),
+            sub: z.literal("RecovPass;)")}
+    ),
     }).safeParse(request.user);
 
     if(!result.success){
