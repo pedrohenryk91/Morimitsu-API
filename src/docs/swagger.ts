@@ -620,7 +620,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                             examples:["kids","normal","mista"]
                                         },
                                     },
-                                    required:["instructorId","name","type"]
+                                    required:["name","type"]
                                 }
                             }
                         }
