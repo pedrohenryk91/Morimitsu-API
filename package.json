@@ -27,6 +27,7 @@
     "fastify-type-provider-zod": "^6.0.0",
     "nodemailer": "^7.0.10",
     "prisma": "^6.19.0",
+    "resend": "^6.6.0",
     "supabase": "^2.45.5",
     "tsx": "^4.20.5",
     "typescript": "^5.9.3",
