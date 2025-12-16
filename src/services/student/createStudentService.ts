@@ -6,6 +6,7 @@ import { gender } from "@prisma/client";
 
 interface CreateStudentParams {
     cpf: string,
+    email: string,
     gender: gender,
     currentFq: number,
     nickname: string,
@@ -22,6 +23,7 @@ export class CreateStudentService {
     constructor(private studentRepo: StudentRepository){}
     async execute({
         cpf,
+        email,
         gender,
         nickname,
         fullName,
@@ -39,6 +41,7 @@ export class CreateStudentService {
 
         await this.studentRepo.create({
             cpf,
+            email,
             gender,
             nickname,
             full_name:fullName,

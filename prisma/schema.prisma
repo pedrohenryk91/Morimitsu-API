@@ -72,6 +72,7 @@ model student {
   id String @id @default(uuid())
   cpf String @unique
   age Int @default(15)
+  email String @default("")
   gender gender
   nickname String
   full_name String

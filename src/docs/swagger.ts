@@ -1,5 +1,6 @@
 import { SwaggerOptions } from "@fastify/swagger";
 import { jsonSchemaTransform } from "fastify-type-provider-zod";
+import { deserialize } from "v8";
 
 const classObject: any = {
     "id":{
@@ -29,6 +30,9 @@ const classObject: any = {
 const studentObject: any = {
     cpf:{
         description:"Student cpf",
+    },
+    email:{
+        description:"Email of the student",
     },
     gender:{
         enum:[
