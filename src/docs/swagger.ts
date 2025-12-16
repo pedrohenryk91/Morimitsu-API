@@ -765,7 +765,12 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                 ]
                             },
                             description:"The type of the class"
-                        }
+                        },
+                        {
+                            name:"instructorId",
+                            in:"query",
+                            description:"The id of the instructor id",
+                        },
                     ],
                     summary:"Search for classes, params in query",
                     security:[{"BearerAuth":[]}],
