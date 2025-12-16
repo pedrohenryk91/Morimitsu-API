@@ -38,7 +38,7 @@ export async function searchStudentsController(request: FastifyRequest, reply: F
                 z.enum(["man", "woman"]).optional()
             ),
             guardianName: qsString(),
-            isMonitor: z.boolean().optional(),
+            isMonitor: z.coerce.boolean().optional(),
             phoneNumber: qsString(),
             cpf: qsString().refine(
                 (data) => (data ? isCpfValid(data) : true),
