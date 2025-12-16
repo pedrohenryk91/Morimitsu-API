@@ -947,6 +947,15 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     summary:"Route to search students by name",
                     security:[{"BearerAuth":[]}],
                     parameters:[
+                        {
+                            in:"query",
+                            name:"isMonitor",
+                            description:"Is the user monitor?",
+                            schema:{
+                                type:"boolean",
+                                examples:["true","false"]
+                            }
+                        },
                        {
                             in:"query",
                             name:"fullName",
