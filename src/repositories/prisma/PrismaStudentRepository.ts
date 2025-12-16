@@ -80,7 +80,7 @@ export class PrismaStudentRepository implements StudentRepository {
     }
 
     async search(data: searchStudentParams, limit?: number): Promise<student[]> {
-        const {fullName,maxAge,minAge,nickname,beltId,cpf,gender,guardianName,phoneNumber} = data
+        const {fullName,maxAge,minAge,nickname,beltId,cpf,gender,guardianName,phoneNumber,isMonitor} = data
         if(Object.values(data).every(v => v === undefined) && !limit){
             limit = 20;
         }
@@ -103,6 +103,10 @@ export class PrismaStudentRepository implements StudentRepository {
 
         if (minAge || maxAge) {
             where.age = { gte: minAge, lte: maxAge };
+        }
+    
+        if(isMonitor){
+            where.is_monitor = true;
         }
 
         if (beltId) where.belt_id = beltId;
@@ -237,7 +241,7 @@ export class PrismaStudentRepository implements StudentRepository {
     }
 
     async update(id: string, data: Partial<Student>): Promise<student | null> {
-        const {guardian_name,guardian_number,current_fq,phone_number,full_name,nickname,birthday,belt_id,cpf} = data;
+        const {guardian_name,guardian_number,current_fq,is_monitor,phone_number,full_name,nickname,birthday,belt_id,cpf} = data;
         return prisma.student.update({
             where:{
                 id,
@@ -248,6 +252,7 @@ export class PrismaStudentRepository implements StudentRepository {
                 current_fq,
                 phone_number,
                 full_name,
+                is_monitor,
                 birthday,
                 nickname,
                 belt_id,

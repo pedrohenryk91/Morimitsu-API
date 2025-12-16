@@ -1,6 +1,7 @@
 export interface searchStudentParams {
     guardianName?: string,
     phoneNumber?: string,
+    isMonitor?: boolean,
     nickname?: string,
     fullName?: string,
     minAge?: number,

@@ -13,6 +13,7 @@ export type Student = {
     birthday: Date;
     current_fq: number;
     belt_id: string;
+    is_monitor: boolean;
 }
 
 export type StudentBasicInfo = {

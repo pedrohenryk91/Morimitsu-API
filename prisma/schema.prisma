@@ -81,6 +81,7 @@ model student {
   birthday DateTime
   current_fq Int @default(0)
   belt_id String
+  is_monitor Boolean @default(false)
 
   belt belt @relation(fields: [belt_id], references: [id])
 

@@ -64,5 +64,9 @@ export class CreateUserFromStudentService {
             name:nickname,
             role:"instructor"
         });
+    
+        await this.studentRepo.update(studentId,{
+            is_monitor:true,
+        })
     }
 }

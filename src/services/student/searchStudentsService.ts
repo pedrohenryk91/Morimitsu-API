@@ -12,6 +12,7 @@ export class SearchStudentsService {
         cpf,
         gender,
         guardianName,
+        isMonitor,
         phoneNumber,
     }: searchStudentParams){
         const students = await this.studentRepo.search({
@@ -22,8 +23,10 @@ export class SearchStudentsService {
             beltId,
             cpf,
             gender,
+            isMonitor,
             guardianName,
             phoneNumber,
+            
         });
 
         return students;

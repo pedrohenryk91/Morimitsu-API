@@ -38,6 +38,7 @@ export async function searchStudentsController(request: FastifyRequest, reply: F
                 z.enum(["man", "woman"]).optional()
             ),
             guardianName: qsString(),
+            isMonitor: z.boolean().optional(),
             phoneNumber: qsString(),
             cpf: qsString().refine(
                 (data) => (data ? isCpfValid(data) : true),
@@ -46,7 +47,7 @@ export async function searchStudentsController(request: FastifyRequest, reply: F
         });
 
 
-        const {beltId,cpf,fullName,gender,guardianName,maxAge,minAge,nickname,phoneNumber} = schema.parse(request.query);
+        const {beltId,cpf,fullName,gender,isMonitor,guardianName,maxAge,minAge,nickname,phoneNumber} = schema.parse(request.query);
 
         const studentRepo = new PrismaStudentRepository();
         const service = new SearchStudentsService(studentRepo);
@@ -59,6 +60,7 @@ export async function searchStudentsController(request: FastifyRequest, reply: F
             beltId,
             cpf,
             gender,
+            isMonitor,
             guardianName,
             phoneNumber,
         });

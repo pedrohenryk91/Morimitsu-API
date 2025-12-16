@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { PrismaUserRepository } from "../../../repositories/prisma/PrismaUserRepository";
 import z from "zod";
 import { DeleteUserService } from "../../../services/user/deleteUserService";
+import { PrismaStudentRepository } from "../../../repositories/prisma/PrismaStudentRepository";
 
 export async function deleteUserController(request: FastifyRequest, reply: FastifyReply) {
     try {
@@ -10,7 +11,8 @@ export async function deleteUserController(request: FastifyRequest, reply: Fasti
         }).parse(request.params);
 
         const userRepo = new PrismaUserRepository();
-        const service = new DeleteUserService(userRepo);
+        const studentRepo = new PrismaStudentRepository();
+        const service = new DeleteUserService(userRepo,studentRepo);
 
         await service.execute(id);
 
