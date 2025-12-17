@@ -930,14 +930,14 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                                                 "white","white_gray","gray", "gray_black","yellow_white","yellow","yellow_black","orange_white","orange","orange_black","green_white","green","green_black","blue","purple","brown","black","red",
                                                             ]
                                                         },
-                                                        "students_count":{
+                                                        "studentsCount":{
                                                             description:"The quantity of students",
                                                             type:"number",
                                                         },
                                                        "percentage":{
                                                             description:"The percentage of the belt",
                                                             examples:["18.18","54.55","9.09"],
-                                                            type:"string"
+                                                            type:"number"
                                                        }
                                                     }
                                                 }
