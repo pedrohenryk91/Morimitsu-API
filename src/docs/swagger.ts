@@ -906,6 +906,50 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
+            "/belt/percentage":{
+                get:{
+                    tags:["Belt"],
+                    summary:"Get belts percentange",
+                    security:[{"BearerAuth":[]}],
+                    description:"Get belts percentage",
+                    responses:{
+                        200:{
+                            description:"success",
+                            content:{
+                                "application/json":{
+                                    schema:{
+                                        properties:{
+                                            result:{
+                                                type:"array",
+                                                items:{
+                                                    type:"object",
+                                                    properties:{
+                                                        "color":{
+                                                            description:"The color of the belt",
+                                                            enum:[
+                                                                "white","white_gray","gray", "gray_black","yellow_white","yellow","yellow_black","orange_white","orange","orange_black","green_white","green","green_black","blue","purple","brown","black","red",
+                                                            ]
+                                                        },
+                                                        "students_count":{
+                                                            description:"The quantity of students",
+                                                            type:"number",
+                                                        },
+                                                       "percentage":{
+                                                            description:"The percentage of the belt",
+                                                            examples:["18.18","54.55","9.09"],
+                                                            type:"string"
+                                                       }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
             "/frequency/add":{
                 put:{
                     tags:["Frequency"],

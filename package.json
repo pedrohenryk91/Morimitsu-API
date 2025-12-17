@@ -9,6 +9,7 @@
     "build": "prisma generate && tsc",
     "start": "node dist/server.js",
     "dev": "tsx --watch src/server.ts",
+    "deploy":"tsx src/server.ts",
     "test": "vitest --run"
   },
   "dependencies": {

@@ -2,6 +2,7 @@ import { $Enums, belt } from "@prisma/client";
 import { BeltRepository } from "../BeltRepository";
 import { prisma } from "../../lib/prisma";
 import { Colors } from "../../lib/types/colors";
+import { BeltPercentage } from "../../lib/types/beltPercentage";
 
 export class PrismaBeltRepository implements BeltRepository {
     async create(data: belt): Promise<belt> {
@@ -44,6 +45,29 @@ export class PrismaBeltRepository implements BeltRepository {
                 color,
             },
         })
+    }
+
+    async getPercentages(): Promise<BeltPercentage[]> {
+    const result = await prisma.$queryRaw<BeltPercentage[]>`
+        WITH total_students AS (
+        SELECT COUNT(*)::numeric AS total
+        FROM "student"
+        )
+        SELECT
+        b.color,
+        COUNT(s.id)::int AS students_count,
+        COALESCE(
+            ROUND((COUNT(s.id)::numeric / t.total) * 100, 2),
+            0
+        ) AS percentage
+        FROM "belt" b
+        LEFT JOIN "student" s ON s.belt_id = b.id
+        CROSS JOIN total_students t
+        GROUP BY b.color, t.total
+        ORDER BY percentage DESC;
+    `;
+
+    return result;
     }
 
     async delete(id: string): Promise<belt | null> {
