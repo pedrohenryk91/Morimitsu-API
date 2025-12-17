@@ -614,7 +614,7 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                                         "name":{
                                             description:"Name of the class"
                                         },
-                                        "type":{
+                                        "classType":{
                                             description:"The class type",
                                             enum:[
                                                 "kids",
