@@ -49,7 +49,7 @@ export class UpdateUserService {
         await this.userRepo.update(id, {
             cpf,
             email,
-            name,
+            name:(name?name:undefined),
             password:hash_password,
             phone_number:phoneNumber,
         })
