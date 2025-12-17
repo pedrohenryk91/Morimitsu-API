@@ -26,7 +26,6 @@ export class SearchStudentsService {
             isMonitor,
             guardianName,
             phoneNumber,
-            
         });
 
         return students;

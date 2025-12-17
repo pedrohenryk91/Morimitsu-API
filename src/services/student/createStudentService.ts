@@ -3,6 +3,7 @@ import { StudentRepository } from "../../repositories/StudentRepository";
 import { date } from "zod";
 import {CpfAlreadyRegistered } from "../../errors/cpfAlreadyRegistered";
 import { gender } from "@prisma/client";
+import { ageCalculation } from "../../utils/ageCalc";
 
 interface CreateStudentParams {
     cpf: string,
@@ -41,6 +42,7 @@ export class CreateStudentService {
 
         await this.studentRepo.create({
             cpf,
+            age:ageCalculation(birthday),
             email,
             gender,
             nickname,
