@@ -6,6 +6,7 @@ import { AddStudentsToClassController } from "../controllers/class/addStudentsTo
 import { getClassStudentsController } from "../controllers/class/getClassStudentsController";
 import { searchClassesController } from "../controllers/class/searchClassesController";
 import { updateClassController } from "../controllers/class/updateClassController";
+import { deleteClassController } from "../controllers/class/deleteClassController";
 
 export async function classRouter(app: FastifyInstance) {
     app.route({
@@ -37,5 +38,11 @@ export async function classRouter(app: FastifyInstance) {
         method:["GET"],
         preHandler:verifyAuthToken,
         handler:searchClassesController,
+    })
+    app.route({
+        url:"/delete/:id",
+        method:["DELETE"],
+        preHandler:verifyAdminAuthToken,
+        handler:deleteClassController,
     })
 }

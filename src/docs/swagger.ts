@@ -844,6 +844,33 @@ export const SwaggerDocumentationOptions:SwaggerOptions = {
                     }
                 }
             },
+            "/class/delete/:id":{
+                delete:{
+                    tags:["Class"],
+                    summary:"Delete a class (ADMIN ONLY)",
+                    security:[{"BearerAuth":[]}],
+                    parameters:[
+                        {
+                            name:"id",
+                            in:"path",
+                            schema:{
+                                type:"string"
+                            }
+                        }
+                    ],
+                    responses:{
+                        200:{
+                            description:"deleted"
+                        },
+                        404:{
+                            description:"Class was not found"
+                        },
+                        500:{
+                            description:"Unpredicted error"
+                        }
+                    }
+                }
+            },
             "/belt/update":{
                 patch:{
                     tags:["Belt"],
