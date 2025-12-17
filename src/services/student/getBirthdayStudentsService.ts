@@ -5,7 +5,7 @@ export class GetBirthdayStudentsService {
     async execute(days: number){
         const students = await this.studentRepo.searchByBirthday(days);
         if(students.length == 0){
-            return `No students had their birthday in the last ${days} days`
+            return `No students is completing their birthday in the next ${days} days`
         }
         return students;
     }

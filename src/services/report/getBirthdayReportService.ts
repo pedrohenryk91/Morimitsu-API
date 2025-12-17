@@ -27,12 +27,12 @@ export class GetBirthdayReportService {
         }
         const doesExistsStudentsCelebrating = await this.studentRepo.checkBirthday(30);
         if(!doesExistsStudentsCelebrating){
-            return "No reports were found for birthdays in the last 30 days";
+            return "No reports were found for birthdays in the next 30 days";
         }
         const report = await this.reportRepo.create({
             id:`.anniversary.${today.getUTCFullYear()}-${today.getMonth()}-${today.getDate()}-${randomUUID()}`,
             date: today,
-            text:"Existem alunos que completaram aniversário nos últimos 30 dias",
+            text:"Existem alunos que realizarão aniversário nos próximos 30 dias",
             title:"Alunos completando aniversário",
             to:"instructor",
         })
