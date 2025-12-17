@@ -1,7 +1,6 @@
 import { hash } from "bcryptjs";
 import { EmailAlreadyInUseError } from "../../errors/emailAlreadyInUseError";
 import { EntityNotFoundError } from "../../errors/entityNotFoundError";
-import { UserAlreadyExistsError } from "../../errors/userAlreadyExistsError";
 import { UserRepository } from "../../repositories/UserRepository";
 import { CpfAlreadyRegistered } from "../../errors/cpfAlreadyRegistered";
 

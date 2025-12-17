@@ -7,6 +7,6 @@ import { app } from "../lib/fastify";
  */
 export function genToken(sub: any){
     return app.jwt.sign({sub},{
-        expiresIn:"1h",
+        expiresIn:"24h",
     });
 }
