@@ -1,4 +1,4 @@
-export function ageCalculation(birthday): number {
+export function ageCalculation(birthday: Date): number {
   const hoje = new Date();
 
   let idade = hoje.getFullYear() - birthday.getFullYear();
